@@ -1,6 +1,8 @@
 # ScalingLayout
 Scale your layout on user interaction. [Live Demo](https://www.youtube.com/watch?v=wA41H0UMoHQ)
 
+Motivated by layout in [Blinkist](https://play.google.com/store/apps/details?id=com.blinkslabs.blinkist.android) app and search bar in [Spotify](https://play.google.com/store/apps/details?id=com.spotify.music) app.
+
 <img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/cover_scaling.png"/>
 
 ## Demo
