@@ -6,7 +6,13 @@ Motivated by layout in [Blinkist](https://play.google.com/store/apps/details?id=
 <img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/cover_scaling.png"/>
 
 ## Demo
-<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_coordinator.gif"/>
+<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_behavior.gif"/>
+
+## Fab Demo
+<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_fab.gif"/>
+
+## Spotify Search Demo
+<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_searchbar.gif"/>
 
 ## Usage
 ```xml
@@ -59,13 +65,6 @@ scalingLayout.setListener(new ScalingLayoutListener() {
         
 </iammert.com.view.scalinglib.ScalingLayout>
 ```
-
-## Demos
-* Spotify Search
-<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_searchbar.gif"/>
-
-* Fab filter
-<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_fab.gif"/>
 
 ## Dependency
 ```gradle
