@@ -4,7 +4,10 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -52,6 +55,7 @@ public class ScalingLayout extends FrameLayout {
      */
     private Path path;
     private RectF rectF;
+    private Paint maskPaint;
 
     /**
      * Animator to expand and collapse
@@ -97,6 +101,11 @@ public class ScalingLayout extends FrameLayout {
         path = new Path();
         rectF = new RectF(0, 0, 0, 0);
 
+        maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        maskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+
+        setLayerType(LAYER_TYPE_HARDWARE, null);
+
         valueAnimator = ValueAnimator.ofFloat(0, 0);
         valueAnimator.setDuration(200);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -137,11 +146,12 @@ public class ScalingLayout extends FrameLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         int save = canvas.save();
-        path.reset();
-        path.addRoundRect(rectF, currentRadius, currentRadius, Path.Direction.CCW);
-        canvas.clipPath(path);
         super.dispatchDraw(canvas);
         canvas.restoreToCount(save);
+
+        path.reset();
+        path.addRoundRect(rectF, currentRadius, currentRadius, Path.Direction.CCW);
+        canvas.drawPath(path, maskPaint);
     }
 
     /**
