@@ -73,7 +73,7 @@ maven { url 'https://jitpack.io' }
 
 ```gradle
 dependencies {
-  compile 'com.github.iammert:ScalingLayout:1.0'
+  compile 'com.github.iammert:ScalingLayout:1.1'
 }
 ```
 License
