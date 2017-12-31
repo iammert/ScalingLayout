@@ -140,6 +140,8 @@ public class ScalingLayout extends FrameLayout {
         }
 
         rectF.set(0, 0, w, h);
+        path.reset();
+        path.addRoundRect(rectF, currentRadius, currentRadius, Path.Direction.CCW);
         invalidate();
     }
 
@@ -148,9 +150,6 @@ public class ScalingLayout extends FrameLayout {
         int save = canvas.save();
         super.dispatchDraw(canvas);
         canvas.restoreToCount(save);
-
-        path.reset();
-        path.addRoundRect(rectF, currentRadius, currentRadius, Path.Direction.CCW);
         canvas.drawPath(path, maskPaint);
     }
 
