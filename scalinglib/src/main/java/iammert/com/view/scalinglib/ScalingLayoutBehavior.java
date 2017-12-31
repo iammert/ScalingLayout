@@ -17,12 +17,12 @@ public class ScalingLayoutBehavior extends CoordinatorLayout.Behavior<ScalingLay
 
     public ScalingLayoutBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
-        //toolbarHeightInPixel = context.getResources().getDimensionPixelSize(R.dimen.sl_toolbar_size);
         TypedValue tv = new TypedValue();
-        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-        {
+        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             toolbarHeightInPixel = TypedValue.complexToDimensionPixelSize(tv.data,context.getResources().getDisplayMetrics());
-        } else toolbarHeightInPixel = 0f;
+        } else {
+            toolbarHeightInPixel = 0f;
+        }
     }
 
     @Override
