@@ -1,26 +1,31 @@
 # ScalingLayout
+[![](https://jitpack.io/v/simonebortolin/FlowLayoutManager.svg)](https://jitpack.io/#simonebortolin/FlowLayoutManager)
+
+Android 3rd party library to make implementing a ScalingLayout
+
 Scale your layout on user interaction. [Live Demo](https://www.youtube.com/watch?v=wA41H0UMoHQ)
 
 Motivated by layout in [Blinkist](https://play.google.com/store/apps/details?id=com.blinkslabs.blinkist.android) app and search bar in [Spotify](https://play.google.com/store/apps/details?id=com.spotify.music) app.
 
-<img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/cover_scaling.png" alt="" width="200px"/>
+<img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/cover_scaling.png" />
+
 
 ## Demo
-<img src="https://github.com/simonebortolin/ScalingLayout/blob/master/art/gif_behavior.gif" alt="" width="200px"/>
+<img src="https://github.com/simonebortolin/ScalingLayout/blob/master/art/gif_behavior.gif" />
 
 ## Fab Demo
-<img src="https://github.com/simonebortolin/ScalingLayout/blob/master/art/gif_fab.gif" alt="" width="200px"/>
+<img src="https://github.com/simonebortolin/ScalingLayout/blob/master/art/gif_fab.gif" />
 
 ## Spotify Search Demo
-<img src="https://github.com/simonebortolin/ScalingLayout/blob/master/art/gif_searchbar.gif" alt="" width="200px"/>
+<img src="https://github.com/simonebortolin/ScalingLayout/blob/master/art/gif_searchbar.gif" />
 
-## Landscape
+## Landscape Screenshots
 
 <a href="https://github.com/simonebortolin/ScalingLayout/blob/master/image_1.png"><img src="https://github.com/simonebortolin/ScalingLayout/blob/master/image_1.png" alt="" width="200px"></a>
 <a href="https://github.com/simonebortolin/ScalingLayout/blob/master/image_2.png"><img src="https://github.com/simonebortolin/ScalingLayout/blob/master/image_2.png" alt="" width="200px"></a>
 
 
-## Usage
+## Installation
 ```xml
 <iammert.com.view.scalinglib.ScalingLayout
         android:id="@+id/scalingLayout"
