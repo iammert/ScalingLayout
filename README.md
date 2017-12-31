@@ -3,16 +3,22 @@ Scale your layout on user interaction. [Live Demo](https://www.youtube.com/watch
 
 Motivated by layout in [Blinkist](https://play.google.com/store/apps/details?id=com.blinkslabs.blinkist.android) app and search bar in [Spotify](https://play.google.com/store/apps/details?id=com.spotify.music) app.
 
-<img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/cover_scaling.png"/>
+<img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/cover_scaling.png" alt="" width="200px"/>
 
 ## Demo
-<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_behavior.gif"/>
+<img src="https://github.com/simonebortolin/ScalingLayout/blob/master/art/gif_behavior.gif" alt="" width="200px"/>
 
 ## Fab Demo
-<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_fab.gif"/>
+<img src="https://github.com/simonebortolin/ScalingLayout/blob/master/art/gif_fab.gif" alt="" width="200px"/>
 
 ## Spotify Search Demo
-<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_searchbar.gif"/>
+<img src="https://github.com/simonebortolin/ScalingLayout/blob/master/art/gif_searchbar.gif" alt="" width="200px"/>
+
+## Landscape
+
+<a href="https://github.com/simonebortolin/ScalingLayout/blob/master/image_1.png"><img src="https://github.com/simonebortolin/ScalingLayout/blob/master/image_1.png" alt="" width="200px"></a>
+<a href="https://github.com/simonebortolin/ScalingLayout/blob/master/image_2.png"><img src="https://github.com/simonebortolin/ScalingLayout/blob/master/image_2.png" alt="" width="200px"></a>
+
 
 ## Usage
 ```xml
@@ -66,18 +72,28 @@ scalingLayout.setListener(new ScalingLayoutListener() {
 </iammert.com.view.scalinglib.ScalingLayout>
 ```
 
-## Dependency
-```gradle
-maven { url 'https://jitpack.io' }
-```
+## Installation
 
-```gradle
-dependencies {
-  compile 'com.github.iammert:ScalingLayout:1.1'
-}
-```
-License
---------
+Step1. Add it in your **root** build.gradle at the end of repositories:
+
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+Step 2. Add the dependency
+
+	dependencies {
+	        compile 'com.github.simonebortolin:ScalingLayout:1.1.2'
+	}
+## Credits
+
+
+I thank all the authors of the various commits that I have included in my fork
+
+
+## License
 
 
     Copyright 2017 Mert Şimşek.
