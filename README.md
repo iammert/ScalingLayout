@@ -1,4 +1,5 @@
 # ScalingLayout
+# ScalingLayout
 [![](https://jitpack.io/v/simonebortolin/FlowLayoutManager.svg)](https://jitpack.io/#simonebortolin/FlowLayoutManager)
 
 Android 3rd party library to make implementing a ScalingLayout
@@ -7,7 +8,7 @@ Scale your layout on user interaction. [Live Demo](https://www.youtube.com/watch
 
 Motivated by layout in [Blinkist](https://play.google.com/store/apps/details?id=com.blinkslabs.blinkist.android) app and search bar in [Spotify](https://play.google.com/store/apps/details?id=com.spotify.music) app.
 
-<img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/cover_scaling.png" />
+<img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/cover_scaling.png"/>
 
 
 ## Demo
