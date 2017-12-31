@@ -1,6 +1,6 @@
 # ScalingLayout
 # ScalingLayout
-[![](https://jitpack.io/v/simonebortolin/FlowLayoutManager.svg)](https://jitpack.io/#simonebortolin/FlowLayoutManager)
+[![](https://jitpack.io/v/simonebortolin/ScalingLayout.svg)](https://jitpack.io/#simonebortolin/ScalingLayout)
 
 Android 3rd party library to make implementing a ScalingLayout
 
