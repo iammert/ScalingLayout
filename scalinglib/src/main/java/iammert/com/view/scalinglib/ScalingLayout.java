@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -12,7 +13,9 @@ import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 
 /**
@@ -67,6 +70,32 @@ public class ScalingLayout extends FrameLayout {
      * progress and collapse/expand
      */
     private ScalingLayoutListener scalingLayoutListener;
+
+    /**
+     * Custom ViewOutlineProvider class
+     */
+
+    private class CustomOutline extends ViewOutlineProvider {
+
+        int width;
+        int height;
+
+        CustomOutline(int width, int height) {
+            this.width = width;
+            this.height = height;
+        }
+
+        @Override
+        public void getOutline(View view, Outline outline) {
+            outline.setRoundRect(0,0,width,height, currentRadius);
+        }
+    }
+
+    /**
+     * CustomOutline for elevation shadows
+     */
+    private CustomOutline viewOutline;
+
 
     public ScalingLayout(@NonNull Context context) {
         super(context);
@@ -140,6 +169,8 @@ public class ScalingLayout extends FrameLayout {
         }
 
         rectF.set(0, 0, w, h);
+        viewOutline = new CustomOutline(w,h);
+        this.setOutlineProvider(viewOutline);
         invalidate();
     }
 
