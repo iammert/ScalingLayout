@@ -72,29 +72,9 @@ public class ScalingLayout extends FrameLayout {
     private ScalingLayoutListener scalingLayoutListener;
 
     /**
-     * Custom ViewOutlineProvider class
-     */
-
-    private class CustomOutline extends ViewOutlineProvider {
-
-        int width;
-        int height;
-
-        CustomOutline(int width, int height) {
-            this.width = width;
-            this.height = height;
-        }
-
-        @Override
-        public void getOutline(View view, Outline outline) {
-            outline.setRoundRect(0,0,width,height, currentRadius);
-        }
-    }
-
-    /**
      * CustomOutline for elevation shadows
      */
-    private CustomOutline viewOutline;
+    private ScalingLayoutOutlineProvider viewOutline;
 
 
     public ScalingLayout(@NonNull Context context) {
@@ -166,10 +146,11 @@ public class ScalingLayout extends FrameLayout {
             settings.initialize(w, h);
             currentWidth = w;
             currentRadius = settings.getMaxRadius();
+            viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
         }
 
         rectF.set(0, 0, w, h);
-        viewOutline = new CustomOutline(w,h);
+        updateViewOutline(h, currentWidth, currentRadius);
         this.setOutlineProvider(viewOutline);
         invalidate();
     }
@@ -235,6 +216,19 @@ public class ScalingLayout extends FrameLayout {
 
     public void setListener(ScalingLayoutListener scalingLayoutListener) {
         this.scalingLayoutListener = scalingLayoutListener;
+    }
+
+    /**
+     * Updates view outline borders and radius
+     *
+     * @param height
+     * @param width
+     * @param radius
+     */
+    private void updateViewOutline(int height, int width, float radius) {
+        viewOutline.setHeight(height);
+        viewOutline.setWidth(width);
+        viewOutline.setRadius(radius);
     }
 
     /**
@@ -321,7 +315,7 @@ public class ScalingLayout extends FrameLayout {
     /**
      * Notify observers about change
      */
-    private void notifyListener(){
+    private void notifyListener() {
         if (scalingLayoutListener != null) {
             if (state == State.COLLAPSED) {
                 scalingLayoutListener.onCollapsed();
