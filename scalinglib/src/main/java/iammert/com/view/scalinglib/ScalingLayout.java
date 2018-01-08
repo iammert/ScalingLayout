@@ -4,18 +4,17 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 
 /**
@@ -151,7 +150,6 @@ public class ScalingLayout extends FrameLayout {
 
         rectF.set(0, 0, w, h);
         updateViewOutline(h, currentWidth, currentRadius);
-        this.setOutlineProvider(viewOutline);
         invalidate();
     }
 
@@ -229,6 +227,13 @@ public class ScalingLayout extends FrameLayout {
         viewOutline.setHeight(height);
         viewOutline.setWidth(width);
         viewOutline.setRadius(radius);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(this) > 0f) {
+            try {
+                setOutlineProvider(viewOutline);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
