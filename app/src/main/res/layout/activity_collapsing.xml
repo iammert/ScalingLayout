@@ -80,7 +80,9 @@
         android:layout_width="300dp"
         android:layout_height="48dp"
         app:radiusFactor="1"
+        android:clickable="true"
         android:layout_gravity="center_horizontal"
+        android:stateListAnimator="@animator/sl_state_animator"
         app:layout_behavior="iammert.com.view.scalinglib.ScalingLayoutBehavior">
 
         <LinearLayout

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    android:orientation="vertical"
-    android:id="@+id/rootLayout">
+    android:orientation="vertical">
 
     <iammert.com.view.scalinglib.ScalingLayout
         android:id="@+id/scalingLayout"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_margin="16dp"
         android:layout_centerInParent="true"
-        android:elevation="4dp"
-        android:foreground="@drawable/sl_state_drawable"
+        android:layout_margin="16dp"
+        android:elevation="6dp"
+        android:stateListAnimator="@animator/sl_state_animator"
         app:radiusFactor="1">
 
         <RelativeLayout
