@@ -12,9 +12,9 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_margin="16dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
         android:elevation="4dp"
+        android:foreground="@drawable/sl_state_drawable"
         app:radiusFactor="1">
 
         <RelativeLayout
