@@ -78,6 +78,7 @@ public class ScalingLayout extends FrameLayout {
     /**
      * CustomOutline for elevation shadows
      */
+    @Nullable
     private ScalingLayoutOutlineProvider viewOutline;
 
 
@@ -153,7 +154,9 @@ public class ScalingLayout extends FrameLayout {
             settings.initialize(w, h);
             currentWidth = w;
             currentRadius = settings.getMaxRadius();
-            viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
+            }
         }
 
         rectF.set(0, 0, w, h);
@@ -232,11 +235,11 @@ public class ScalingLayout extends FrameLayout {
      * @param radius
      */
     private void updateViewOutline(int height, int width, float radius) {
-        viewOutline.setHeight(height);
-        viewOutline.setWidth(width);
-        viewOutline.setRadius(radius);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(this) > 0f) {
             try {
+                viewOutline.setHeight(height);
+                viewOutline.setWidth(width);
+                viewOutline.setRadius(radius);
                 setOutlineProvider(viewOutline);
             } catch (Exception e) {
                 e.printStackTrace();
