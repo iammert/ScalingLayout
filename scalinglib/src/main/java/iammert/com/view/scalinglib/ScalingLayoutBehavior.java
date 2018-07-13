@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 
 /**
@@ -16,7 +17,12 @@ public class ScalingLayoutBehavior extends CoordinatorLayout.Behavior<ScalingLay
 
     public ScalingLayoutBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
-        toolbarHeightInPixel = context.getResources().getDimensionPixelSize(R.dimen.sl_toolbar_size);
+        TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            toolbarHeightInPixel = TypedValue.complexToDimensionPixelSize(tv.data,context.getResources().getDisplayMetrics());
+        } else {
+            toolbarHeightInPixel = 0f;
+        }
     }
 
     @Override
