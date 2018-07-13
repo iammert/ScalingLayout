@@ -16,6 +16,7 @@ public class ScalingLayoutSettings {
     private int initialWidth;
     private int maxWidth;
     private float maxRadius;
+    private float elevation;
     private boolean isInitialized = false;
 
     public ScalingLayoutSettings(Context context, AttributeSet attributeSet) {
@@ -54,4 +55,11 @@ public class ScalingLayoutSettings {
         return isInitialized;
     }
 
+    public void setElevation(float elevation) {
+        this.elevation = elevation;
+    }
+
+    public float getElevation() {
+        return elevation;
+    }
 }

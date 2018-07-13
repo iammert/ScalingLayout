@@ -2,17 +2,23 @@ package iammert.com.view.scalinglib;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 
 /**
@@ -54,6 +60,7 @@ public class ScalingLayout extends FrameLayout {
      * Values to draw rounded on layout
      */
     private Path path;
+    private Path outlinePath;
     private RectF rectF;
     private Paint maskPaint;
 
@@ -67,6 +74,13 @@ public class ScalingLayout extends FrameLayout {
      * progress and collapse/expand
      */
     private ScalingLayoutListener scalingLayoutListener;
+
+    /**
+     * CustomOutline for elevation shadows
+     */
+    @Nullable
+    private ScalingLayoutOutlineProvider viewOutline;
+
 
     public ScalingLayout(@NonNull Context context) {
         super(context);
@@ -97,8 +111,11 @@ public class ScalingLayout extends FrameLayout {
      */
     public void init(Context context, AttributeSet attributeSet) {
         settings = new ScalingLayoutSettings(context, attributeSet);
+        settings.setElevation(ViewCompat.getElevation(this));
         state = State.COLLAPSED;
+
         path = new Path();
+        outlinePath = new Path();
         rectF = new RectF(0, 0, 0, 0);
 
         maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -137,9 +154,13 @@ public class ScalingLayout extends FrameLayout {
             settings.initialize(w, h);
             currentWidth = w;
             currentRadius = settings.getMaxRadius();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
+            }
         }
 
         rectF.set(0, 0, w, h);
+        updateViewOutline(h, currentWidth, currentRadius);
         invalidate();
     }
 
@@ -207,6 +228,26 @@ public class ScalingLayout extends FrameLayout {
     }
 
     /**
+     * Updates view outline borders and radius
+     *
+     * @param height
+     * @param width
+     * @param radius
+     */
+    private void updateViewOutline(int height, int width, float radius) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(this) > 0f) {
+            try {
+                viewOutline.setHeight(height);
+                viewOutline.setWidth(width);
+                viewOutline.setRadius(radius);
+                setOutlineProvider(viewOutline);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * Set radius will update layout radius
      * Also layouts margins and width depend on
      * radius. So If you update radius, your layout's width
@@ -223,6 +264,7 @@ public class ScalingLayout extends FrameLayout {
         updateCurrentWidth(currentRadius);
         updateCurrentMargins(currentRadius);
         updateState(currentRadius);
+        updateCurrentElevation();
 
         getLayoutParams().width = currentWidth;
         ((ViewGroup.MarginLayoutParams) getLayoutParams())
@@ -287,10 +329,21 @@ public class ScalingLayout extends FrameLayout {
         notifyListener();
     }
 
+    private void updateCurrentElevation() {
+        ViewCompat.setElevation(this, settings.getElevation());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(this) > 0f) {
+            try {
+                setOutlineProvider(getOutlineProvider());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * Notify observers about change
      */
-    private void notifyListener(){
+    private void notifyListener() {
         if (scalingLayoutListener != null) {
             if (state == State.COLLAPSED) {
                 scalingLayoutListener.onCollapsed();
@@ -300,5 +353,16 @@ public class ScalingLayout extends FrameLayout {
                 scalingLayoutListener.onProgress(currentRadius / settings.getMaxRadius());
             }
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public ViewOutlineProvider getOutlineProvider() {
+        return new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setConvexPath(path);
+            }
+        };
     }
 }

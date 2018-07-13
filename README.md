@@ -89,6 +89,7 @@ Step1. Add it in your **root** build.gradle at the end of repositories:
 	}
 Step 2. Add the dependency
 
+
 	dependencies {
 	        implementation 'com.github.simonebortolin:ScalingLayout:1.1.2'
 	}
@@ -99,6 +100,7 @@ I thank all the authors of the various commits that I have included in my fork
 
 
 ## License
+
 
 
     Copyright 2017 Mert Şimşek.
