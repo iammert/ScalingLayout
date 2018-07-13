@@ -91,7 +91,7 @@ Step 2. Add the dependency
 
 
 	dependencies {
-	        implementation 'com.github.simonebortolin:ScalingLayout:1.1.2'
+	        implementation 'com.github.simonebortolin:ScalingLayout:1.2'
 	}
 ## Credits
 
