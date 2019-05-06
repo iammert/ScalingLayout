@@ -355,6 +355,10 @@ public class ScalingLayout extends FrameLayout {
         }
     }
 
+    public boolean hasToolbar() {
+        return settings.hasToolbar();
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public ViewOutlineProvider getOutlineProvider() {
