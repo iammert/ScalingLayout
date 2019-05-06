@@ -12,11 +12,9 @@ import android.view.View;
 
 public class ScalingLayoutBehavior extends CoordinatorLayout.Behavior<ScalingLayout> {
 
-    private final float toolbarHeightInPixel;
 
     public ScalingLayoutBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
-        toolbarHeightInPixel = context.getResources().getDimensionPixelSize(R.dimen.sl_toolbar_size);
     }
 
     @Override
@@ -27,6 +25,10 @@ public class ScalingLayoutBehavior extends CoordinatorLayout.Behavior<ScalingLay
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, ScalingLayout child, View dependency) {
         int totalScrollRange = ((AppBarLayout) dependency).getTotalScrollRange();
+        int toolbarHeightInPixel ;
+        if(child.hasToolbar()) toolbarHeightInPixel = parent.getContext().getResources().getDimensionPixelSize(R.dimen.sl_toolbar_size);
+        else toolbarHeightInPixel = 0 ;
+
         child.setProgress((-dependency.getY()) / totalScrollRange);
         if (totalScrollRange + dependency.getY() > (float) child.getMeasuredHeight() / 2) {
             child.setTranslationY(totalScrollRange + dependency.getY() + toolbarHeightInPixel - (float) child.getMeasuredHeight() / 2);
