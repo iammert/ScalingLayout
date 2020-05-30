@@ -23,7 +23,7 @@ public class ScalingLayoutSettings {
     public ScalingLayoutSettings(Context context, AttributeSet attributeSet) {
         TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.ScalingLayout);
         radiusFactor = typedArray.getFloat(R.styleable.ScalingLayout_radiusFactor, DEFAULT_RADIUS_FACTOR);
-        hasToolbar = typedArray.getBoolean(R.styleable.ScalingLayout_hasToolbar,false);
+        hasToolbar = typedArray.getBoolean(R.styleable.ScalingLayout_hasToolbar,true);
         maxWidth = context.getResources().getDisplayMetrics().widthPixels;
         typedArray.recycle();
 
