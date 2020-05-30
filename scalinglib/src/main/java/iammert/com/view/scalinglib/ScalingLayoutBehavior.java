@@ -41,6 +41,7 @@ public class ScalingLayoutBehavior extends CoordinatorLayout.Behavior<ScalingLay
         child.setProgress((-dependency.getY()) / totalScrollRange);
         if (totalScrollRange + dependency.getY() > (float) child.getMeasuredHeight() / 2) {
             child.setTranslationY(totalScrollRange + dependency.getY() + toolbarHeightInPixel - (float) child.getMeasuredHeight() / 2);
+
         } else {
             child.setTranslationY(toolbarHeightInPixel);
         }

@@ -162,8 +162,8 @@ public class ScalingLayout extends FrameLayout {
         }
 
         rectF.set(0, 0, w, h);
+
         updateViewOutline(h, currentWidth, currentRadius);
-        invalidate();
     }
 
     @Override
@@ -222,6 +222,7 @@ public class ScalingLayout extends FrameLayout {
         if (progress > 1.0f || progress < 0.0f) {
             return;
         }
+
         setRadius(settings.getMaxRadius() - settings.getMaxRadius() * progress);
     }
 
@@ -239,10 +240,12 @@ public class ScalingLayout extends FrameLayout {
     private void updateViewOutline(int height, int width, float radius) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(this) > 0f) {
             try {
+                invalidate();
                 viewOutline.setHeight(height);
                 viewOutline.setWidth(width);
                 viewOutline.setRadius(radius);
                 setOutlineProvider(viewOutline);
+                setClipToOutline(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -335,7 +338,8 @@ public class ScalingLayout extends FrameLayout {
         ViewCompat.setElevation(this, settings.getElevation());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(this) > 0f) {
             try {
-                setOutlineProvider(getOutlineProvider());
+                setOutlineProvider(viewOutline);
+                setClipToOutline(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
