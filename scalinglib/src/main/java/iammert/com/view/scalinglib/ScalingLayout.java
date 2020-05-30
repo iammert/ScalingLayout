@@ -238,7 +238,7 @@ public class ScalingLayout extends FrameLayout {
      * @param radius
      */
     private void updateViewOutline(int height, int width, float radius) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(this) > 0f) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
                 invalidate();
                 viewOutline.setHeight(height);
@@ -277,6 +277,8 @@ public class ScalingLayout extends FrameLayout {
                         (int) currentMargins[1],
                         (int) currentMargins[2],
                         (int) currentMargins[3]);
+
+        updateViewOutline(getHeight(), currentWidth, radius);
         requestLayout();
     }
 
