@@ -12,9 +12,9 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,9 +154,11 @@ public class ScalingLayout extends FrameLayout {
             settings.initialize(w, h);
             currentWidth = w;
             currentRadius = settings.getMaxRadius();
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
             }
+
         }
 
         rectF.set(0, 0, w, h);

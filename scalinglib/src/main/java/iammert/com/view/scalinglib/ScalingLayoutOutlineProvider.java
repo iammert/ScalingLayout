@@ -2,7 +2,7 @@ package iammert.com.view.scalinglib;
 
 import android.graphics.Outline;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 
@@ -26,6 +26,7 @@ public class ScalingLayoutOutlineProvider extends ViewOutlineProvider {
     public void getOutline(View view, Outline outline) {
         outline.setRoundRect(0, 0, width, height, radius);
     }
+
 
     public int getWidth() {
         return width;

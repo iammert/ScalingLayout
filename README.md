@@ -100,10 +100,8 @@ I thank all the authors of the various commits that I have included in my fork
 
 
 ## License
-
-
-
     Copyright 2017 Mert Şimşek.
+    Copyright 2018-2020 Simone Bortolin
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
