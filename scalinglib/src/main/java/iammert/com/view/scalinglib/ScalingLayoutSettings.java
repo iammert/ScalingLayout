@@ -18,10 +18,12 @@ public class ScalingLayoutSettings {
     private float maxRadius;
     private float elevation;
     private boolean isInitialized = false;
+    private boolean hasToolbar ;
 
     public ScalingLayoutSettings(Context context, AttributeSet attributeSet) {
         TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.ScalingLayout);
         radiusFactor = typedArray.getFloat(R.styleable.ScalingLayout_radiusFactor, DEFAULT_RADIUS_FACTOR);
+        hasToolbar = typedArray.getBoolean(R.styleable.ScalingLayout_hasToolbar,true);
         maxWidth = context.getResources().getDisplayMetrics().widthPixels;
         typedArray.recycle();
 
@@ -61,5 +63,9 @@ public class ScalingLayoutSettings {
 
     public float getElevation() {
         return elevation;
+    }
+
+    public boolean hasToolbar() {
+        return hasToolbar;
     }
 }

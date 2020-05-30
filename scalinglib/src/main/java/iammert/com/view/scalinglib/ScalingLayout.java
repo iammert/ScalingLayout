@@ -12,9 +12,9 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,14 +154,16 @@ public class ScalingLayout extends FrameLayout {
             settings.initialize(w, h);
             currentWidth = w;
             currentRadius = settings.getMaxRadius();
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
             }
+
         }
 
         rectF.set(0, 0, w, h);
+
         updateViewOutline(h, currentWidth, currentRadius);
-        invalidate();
     }
 
     @Override
@@ -220,6 +222,7 @@ public class ScalingLayout extends FrameLayout {
         if (progress > 1.0f || progress < 0.0f) {
             return;
         }
+
         setRadius(settings.getMaxRadius() - settings.getMaxRadius() * progress);
     }
 
@@ -235,12 +238,14 @@ public class ScalingLayout extends FrameLayout {
      * @param radius
      */
     private void updateViewOutline(int height, int width, float radius) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(this) > 0f) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
+                invalidate();
                 viewOutline.setHeight(height);
                 viewOutline.setWidth(width);
                 viewOutline.setRadius(radius);
                 setOutlineProvider(viewOutline);
+                setClipToOutline(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -272,6 +277,8 @@ public class ScalingLayout extends FrameLayout {
                         (int) currentMargins[1],
                         (int) currentMargins[2],
                         (int) currentMargins[3]);
+
+        updateViewOutline(getHeight(), currentWidth, radius);
         requestLayout();
     }
 
@@ -333,7 +340,8 @@ public class ScalingLayout extends FrameLayout {
         ViewCompat.setElevation(this, settings.getElevation());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(this) > 0f) {
             try {
-                setOutlineProvider(getOutlineProvider());
+                setOutlineProvider(viewOutline);
+                setClipToOutline(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -353,6 +361,10 @@ public class ScalingLayout extends FrameLayout {
                 scalingLayoutListener.onProgress(currentRadius / settings.getMaxRadius());
             }
         }
+    }
+
+    public boolean hasToolbar() {
+        return settings.hasToolbar();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

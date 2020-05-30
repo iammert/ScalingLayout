@@ -2,17 +2,17 @@ apply plugin: 'com.android.library'
 
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion androidCompileSdkVersion
+    buildToolsVersion buildToolsVersion
 
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
+        versionCode versionCode
+        versionName versionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
     }
     buildTypes {
@@ -24,6 +24,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:design:26.1.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.google.android.material:material:1.1.0'
 }
