@@ -3,6 +3,7 @@
 
     <declare-styleable name="ScalingLayout">
         <attr name="radiusFactor" format="float"/>
+        <attr name="hasToolbar" format="boolean"/>
     </declare-styleable>
 
 </resources>
