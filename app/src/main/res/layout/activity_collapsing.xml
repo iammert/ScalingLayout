@@ -142,7 +142,7 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:layout_marginLeft="8dp"
-                    android:text="Remind Later"
+                    android:text="Save"
                     android:textColor="#ffffff"
                     android:textSize="18sp" />
 
