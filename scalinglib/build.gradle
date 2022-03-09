@@ -3,7 +3,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
 
 
     defaultConfig {
@@ -24,6 +23,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:design:26.1.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api 'com.android.support:design:26.1.0'
 }
