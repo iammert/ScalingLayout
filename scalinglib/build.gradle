@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 32
 
 
     defaultConfig {
@@ -11,7 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
     buildTypes {
@@ -24,5 +24,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api 'com.android.support:design:26.1.0'
+    api 'androidx.core:core:1.7.0'
+    api 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
+    api 'com.google.android.material:material:1.5.0'
 }
