@@ -1,10 +1,18 @@
-*.iml
-.gradle
+# Gradle
+.gradle/
+build/
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
+
+# Android Studio / IntelliJ
+*.iml
+.idea/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Kotlin
+.kotlin/
+
+# OS
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.idea
+Thumbs.db
