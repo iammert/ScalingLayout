@@ -1,10 +1,13 @@
 package iammert.com.view.scalinglib;
 
 import android.content.Context;
-import com.google.android.material.appbar.AppBarLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 /**
  * Created by mertsimsek on 30/09/2017.
@@ -20,19 +23,27 @@ public class ScalingLayoutBehavior extends CoordinatorLayout.Behavior<ScalingLay
     }
 
     @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, ScalingLayout child, View dependency) {
+    public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull ScalingLayout child, @NonNull View dependency) {
         return dependency instanceof AppBarLayout;
     }
 
     @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, ScalingLayout child, View dependency) {
+    public boolean onDependentViewChanged(@NonNull CoordinatorLayout parent, @NonNull ScalingLayout child, @NonNull View dependency) {
         int totalScrollRange = ((AppBarLayout) dependency).getTotalScrollRange();
-        child.setProgress((-dependency.getY()) / totalScrollRange);
-        if (totalScrollRange + dependency.getY() > (float) child.getMeasuredHeight() / 2) {
-            child.setTranslationY(totalScrollRange + dependency.getY() + toolbarHeightInPixel - (float) child.getMeasuredHeight() / 2);
+        if (totalScrollRange <= 0) {
+            // AppBarLayout is not scrollable (yet). Avoid dividing by zero.
+            return false;
+        }
+
+        float progress = -dependency.getY() / totalScrollRange;
+        child.setProgress(Math.max(0f, Math.min(1f, progress)));
+
+        float halfChildHeight = child.getMeasuredHeight() / 2f;
+        if (totalScrollRange + dependency.getY() > halfChildHeight) {
+            child.setTranslationY(totalScrollRange + dependency.getY() + toolbarHeightInPixel - halfChildHeight);
         } else {
             child.setTranslationY(toolbarHeightInPixel);
         }
-        return super.onDependentViewChanged(parent, child, dependency);
+        return true;
     }
 }
