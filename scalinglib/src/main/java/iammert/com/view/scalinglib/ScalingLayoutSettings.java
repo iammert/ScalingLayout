@@ -34,7 +34,7 @@ public class ScalingLayoutSettings {
         if (!isInitialized) {
             isInitialized = true;
             initialWidth = width;
-            float radiusLimit = height / 2;
+            float radiusLimit = height / 2f;
             maxRadius = radiusLimit * radiusFactor;
         }
     }
