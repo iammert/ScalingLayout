@@ -197,16 +197,37 @@ public class ScalingLayout extends FrameLayout {
      * Expand layout to screen
      */
     public void expand() {
-        valueAnimator.setFloatValues(settings.getMaxRadius(), 0);
-        valueAnimator.start();
+        animateRadiusTo(0);
     }
 
     /**
      * Collapse layout to initial position
      */
     public void collapse() {
-        valueAnimator.setFloatValues(0, settings.getMaxRadius());
+        animateRadiusTo(settings.getMaxRadius());
+    }
+
+    /**
+     * Animates from the current radius to the target radius so that
+     * calling expand/collapse in the middle of an animation does not jump.
+     *
+     * @param targetRadius
+     */
+    private void animateRadiusTo(float targetRadius) {
+        if (valueAnimator.isRunning()) {
+            valueAnimator.cancel();
+        }
+        if (currentRadius == targetRadius) {
+            return;
+        }
+        valueAnimator.setFloatValues(currentRadius, targetRadius);
         valueAnimator.start();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        valueAnimator.cancel();
+        super.onDetachedFromWindow();
     }
 
     /**
@@ -217,7 +238,7 @@ public class ScalingLayout extends FrameLayout {
      * @param progress
      */
     public void setProgress(float progress) {
-        if (progress > 1.0f || progress < 0.0f) {
+        if (Float.isNaN(progress) || progress > 1.0f || progress < 0.0f) {
             return;
         }
         setRadius(settings.getMaxRadius() - settings.getMaxRadius() * progress);
@@ -256,7 +277,7 @@ public class ScalingLayout extends FrameLayout {
      * @param radius
      */
     private void setRadius(float radius) {
-        if (radius < 0) {
+        if (radius < 0 || Float.isNaN(radius) || !settings.isInitialized()) {
             return;
         }
 
@@ -319,6 +340,7 @@ public class ScalingLayout extends FrameLayout {
      * @param currentRadius
      */
     private void updateState(float currentRadius) {
+        State previousState = state;
         if (currentRadius == 0) {
             state = State.EXPANDED;
         } else if (currentRadius == settings.getMaxRadius()) {
@@ -326,7 +348,10 @@ public class ScalingLayout extends FrameLayout {
         } else {
             state = State.PROGRESSING;
         }
-        notifyListener();
+
+        if (state != previousState || state == State.PROGRESSING) {
+            notifyListener();
+        }
     }
 
     private void updateCurrentElevation() {
