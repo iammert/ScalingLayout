@@ -55,10 +55,19 @@ public class ScalingLayoutSettings {
         return isInitialized;
     }
 
+    /**
+     * @deprecated Elevation is no longer managed by ScalingLayout.
+     * Use {@link android.view.View#setElevation(float)} on the layout instead.
+     */
+    @Deprecated
     public void setElevation(float elevation) {
         this.elevation = elevation;
     }
 
+    /**
+     * @deprecated Use {@link android.view.View#getElevation()} on the layout instead.
+     */
+    @Deprecated
     public float getElevation() {
         return elevation;
     }

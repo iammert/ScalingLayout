@@ -2,10 +2,8 @@ package iammert.com.view.scalinglib;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -14,11 +12,8 @@ import android.graphics.RectF;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 
 /**
@@ -60,7 +55,6 @@ public class ScalingLayout extends FrameLayout {
      * Values to draw rounded on layout
      */
     private Path path;
-    private Path outlinePath;
     private RectF rectF;
     private Paint maskPaint;
 
@@ -111,11 +105,9 @@ public class ScalingLayout extends FrameLayout {
      */
     public void init(Context context, AttributeSet attributeSet) {
         settings = new ScalingLayoutSettings(context, attributeSet);
-        settings.setElevation(ViewCompat.getElevation(this));
         state = State.COLLAPSED;
 
         path = new Path();
-        outlinePath = new Path();
         rectF = new RectF(0, 0, 0, 0);
 
         maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -139,11 +131,13 @@ public class ScalingLayout extends FrameLayout {
         if (maxMargins == null) {
             maxMargins = new float[4];
             currentMargins = new float[4];
-            ViewGroup.MarginLayoutParams marginLayoutParams = ((ViewGroup.MarginLayoutParams) getLayoutParams());
-            currentMargins[0] = maxMargins[0] = marginLayoutParams.leftMargin;
-            currentMargins[1] = maxMargins[1] = marginLayoutParams.topMargin;
-            currentMargins[2] = maxMargins[2] = marginLayoutParams.rightMargin;
-            currentMargins[3] = maxMargins[3] = marginLayoutParams.bottomMargin;
+            if (getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                ViewGroup.MarginLayoutParams marginLayoutParams = ((ViewGroup.MarginLayoutParams) getLayoutParams());
+                currentMargins[0] = maxMargins[0] = marginLayoutParams.leftMargin;
+                currentMargins[1] = maxMargins[1] = marginLayoutParams.topMargin;
+                currentMargins[2] = maxMargins[2] = marginLayoutParams.rightMargin;
+                currentMargins[3] = maxMargins[3] = marginLayoutParams.bottomMargin;
+            }
         }
     }
 
@@ -156,6 +150,7 @@ public class ScalingLayout extends FrameLayout {
             currentRadius = settings.getMaxRadius();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
+                setOutlineProvider(viewOutline);
             }
         }
 
@@ -256,15 +251,11 @@ public class ScalingLayout extends FrameLayout {
      * @param radius
      */
     private void updateViewOutline(int height, int width, float radius) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(this) > 0f) {
-            try {
-                viewOutline.setHeight(height);
-                viewOutline.setWidth(width);
-                viewOutline.setRadius(radius);
-                setOutlineProvider(viewOutline);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && viewOutline != null) {
+            viewOutline.setHeight(height);
+            viewOutline.setWidth(width);
+            viewOutline.setRadius(radius);
+            invalidateOutline();
         }
     }
 
@@ -285,14 +276,17 @@ public class ScalingLayout extends FrameLayout {
         updateCurrentWidth(currentRadius);
         updateCurrentMargins(currentRadius);
         updateState(currentRadius);
-        updateCurrentElevation();
+        updateViewOutline(getHeight(), currentWidth, currentRadius);
 
-        getLayoutParams().width = currentWidth;
-        ((ViewGroup.MarginLayoutParams) getLayoutParams())
-                .setMargins((int) currentMargins[0],
-                        (int) currentMargins[1],
-                        (int) currentMargins[2],
-                        (int) currentMargins[3]);
+        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+        layoutParams.width = currentWidth;
+        if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
+            ((ViewGroup.MarginLayoutParams) layoutParams)
+                    .setMargins((int) currentMargins[0],
+                            (int) currentMargins[1],
+                            (int) currentMargins[2],
+                            (int) currentMargins[3]);
+        }
         requestLayout();
     }
 
@@ -354,17 +348,6 @@ public class ScalingLayout extends FrameLayout {
         }
     }
 
-    private void updateCurrentElevation() {
-        ViewCompat.setElevation(this, settings.getElevation());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && ViewCompat.getElevation(this) > 0f) {
-            try {
-                setOutlineProvider(getOutlineProvider());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     /**
      * Notify observers about change
      */
@@ -378,16 +361,5 @@ public class ScalingLayout extends FrameLayout {
                 scalingLayoutListener.onProgress(currentRadius / settings.getMaxRadius());
             }
         }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public ViewOutlineProvider getOutlineProvider() {
-        return new ViewOutlineProvider() {
-            @Override
-            public void getOutline(View view, Outline outline) {
-                outline.setConvexPath(path);
-            }
-        };
     }
 }
