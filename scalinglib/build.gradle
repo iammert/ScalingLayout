@@ -1,19 +1,23 @@
 apply plugin: 'com.android.library'
 
-
 android {
-    compileSdkVersion 32
-
+    namespace 'iammert.com.view.scalinglib'
+    compileSdk 33
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 32
+        minSdk 15
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
     buildTypes {
         release {
             minifyEnabled false
