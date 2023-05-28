@@ -13,7 +13,9 @@ import android.view.ViewOutlineProvider;
 public class ScalingLayoutOutlineProvider extends ViewOutlineProvider {
 
     private int width;
+
     private int height;
+
     private float radius;
 
     ScalingLayoutOutlineProvider(int width, int height, float radius) {

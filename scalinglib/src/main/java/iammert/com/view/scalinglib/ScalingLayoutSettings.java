@@ -7,16 +7,20 @@ import android.util.AttributeSet;
 /**
  * Created by mertsimsek on 30/09/2017.
  */
-
 public class ScalingLayoutSettings {
 
     private static final float DEFAULT_RADIUS_FACTOR = 1.0f;
 
     private float radiusFactor;
+
     private int initialWidth;
+
     private int maxWidth;
+
     private float maxRadius;
+
     private float elevation;
+
     private boolean isInitialized = false;
 
     public ScalingLayoutSettings(Context context, AttributeSet attributeSet) {
@@ -24,7 +28,6 @@ public class ScalingLayoutSettings {
         radiusFactor = typedArray.getFloat(R.styleable.ScalingLayout_radiusFactor, DEFAULT_RADIUS_FACTOR);
         maxWidth = context.getResources().getDisplayMetrics().widthPixels;
         typedArray.recycle();
-
         if (radiusFactor > DEFAULT_RADIUS_FACTOR) {
             radiusFactor = DEFAULT_RADIUS_FACTOR;
         }
