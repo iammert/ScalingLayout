@@ -9,7 +9,6 @@ import android.view.View;
 /**
  * Created by mertsimsek on 30/09/2017.
  */
-
 public class ScalingLayoutBehavior extends CoordinatorLayout.Behavior<ScalingLayout> {
 
     private final float toolbarHeightInPixel;

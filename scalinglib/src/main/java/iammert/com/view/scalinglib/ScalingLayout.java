@@ -24,7 +24,6 @@ import android.widget.FrameLayout;
 /**
  * Created by mertsimsek on 30/09/2017.
  */
-
 public class ScalingLayout extends FrameLayout {
 
     /**
@@ -49,6 +48,7 @@ public class ScalingLayout extends FrameLayout {
      * according to radius.
      */
     private float[] maxMargins;
+
     private float[] currentMargins;
 
     /**
@@ -60,8 +60,11 @@ public class ScalingLayout extends FrameLayout {
      * Values to draw rounded on layout
      */
     private Path path;
+
     private Path outlinePath;
+
     private RectF rectF;
+
     private Paint maskPaint;
 
     /**
@@ -80,7 +83,6 @@ public class ScalingLayout extends FrameLayout {
      */
     @Nullable
     private ScalingLayoutOutlineProvider viewOutline;
-
 
     public ScalingLayout(@NonNull Context context) {
         super(context);
@@ -113,19 +115,16 @@ public class ScalingLayout extends FrameLayout {
         settings = new ScalingLayoutSettings(context, attributeSet);
         settings.setElevation(ViewCompat.getElevation(this));
         state = State.COLLAPSED;
-
         path = new Path();
         outlinePath = new Path();
         rectF = new RectF(0, 0, 0, 0);
-
         maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         maskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-
         setLayerType(LAYER_TYPE_HARDWARE, null);
-
         valueAnimator = ValueAnimator.ofFloat(0, 0);
         valueAnimator.setDuration(200);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 setRadius((Float) valueAnimator.getAnimatedValue());
@@ -158,7 +157,6 @@ public class ScalingLayout extends FrameLayout {
                 viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
             }
         }
-
         rectF.set(0, 0, w, h);
         updateViewOutline(h, currentWidth, currentRadius);
         invalidate();
@@ -169,7 +167,6 @@ public class ScalingLayout extends FrameLayout {
         int save = canvas.save();
         super.dispatchDraw(canvas);
         canvas.restoreToCount(save);
-
         path.reset();
         path.addRoundRect(rectF, currentRadius, currentRadius, Path.Direction.CCW);
         canvas.drawPath(path, maskPaint);
@@ -259,19 +256,13 @@ public class ScalingLayout extends FrameLayout {
         if (radius < 0) {
             return;
         }
-
         updateCurrentRadius(radius);
         updateCurrentWidth(currentRadius);
         updateCurrentMargins(currentRadius);
         updateState(currentRadius);
         updateCurrentElevation();
-
         getLayoutParams().width = currentWidth;
-        ((ViewGroup.MarginLayoutParams) getLayoutParams())
-                .setMargins((int) currentMargins[0],
-                        (int) currentMargins[1],
-                        (int) currentMargins[2],
-                        (int) currentMargins[3]);
+        ((ViewGroup.MarginLayoutParams) getLayoutParams()).setMargins((int) currentMargins[0], (int) currentMargins[1], (int) currentMargins[2], (int) currentMargins[3]);
         requestLayout();
     }
 
@@ -359,6 +350,7 @@ public class ScalingLayout extends FrameLayout {
     @Override
     public ViewOutlineProvider getOutlineProvider() {
         return new ViewOutlineProvider() {
+
             @Override
             public void getOutline(View view, Outline outline) {
                 outline.setConvexPath(path);
