@@ -28,20 +28,26 @@ public class ScalingLayout extends FrameLayout {
     ScalingLayoutSettings settings;
 
     /**
+     * Current progress. 0 is collapsed, 1 is fully expanded.
+     * Radius, width and margins are derived from this value.
+     */
+    private float currentProgress;
+
+    /**
      * Current radius
      */
     private float currentRadius;
 
     /**
      * Width is dependent value. It depends on
-     * radius. If radius gets updated,
+     * progress. If progress gets updated,
      * layout width will be updated according to this change.
      */
     private int currentWidth;
 
     /**
      * If layout has margins, margin has to be change
-     * according to radius.
+     * according to progress.
      */
     private float[] maxMargins;
     private float[] currentMargins;
@@ -120,7 +126,7 @@ public class ScalingLayout extends FrameLayout {
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                setRadius((Float) valueAnimator.getAnimatedValue());
+                applyProgress((Float) valueAnimator.getAnimatedValue());
             }
         });
     }
@@ -147,6 +153,7 @@ public class ScalingLayout extends FrameLayout {
         if (!settings.isInitialized()) {
             settings.initialize(w, h);
             currentWidth = w;
+            currentProgress = 0f;
             currentRadius = settings.getMaxRadius();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
@@ -192,30 +199,30 @@ public class ScalingLayout extends FrameLayout {
      * Expand layout to screen
      */
     public void expand() {
-        animateRadiusTo(0);
+        animateProgressTo(1f);
     }
 
     /**
      * Collapse layout to initial position
      */
     public void collapse() {
-        animateRadiusTo(settings.getMaxRadius());
+        animateProgressTo(0f);
     }
 
     /**
-     * Animates from the current radius to the target radius so that
+     * Animates from the current progress to the target progress so that
      * calling expand/collapse in the middle of an animation does not jump.
      *
-     * @param targetRadius
+     * @param targetProgress
      */
-    private void animateRadiusTo(float targetRadius) {
+    private void animateProgressTo(float targetProgress) {
         if (valueAnimator.isRunning()) {
             valueAnimator.cancel();
         }
-        if (currentRadius == targetRadius) {
+        if (currentProgress == targetProgress) {
             return;
         }
-        valueAnimator.setFloatValues(currentRadius, targetRadius);
+        valueAnimator.setFloatValues(currentProgress, targetProgress);
         valueAnimator.start();
     }
 
@@ -236,7 +243,7 @@ public class ScalingLayout extends FrameLayout {
         if (Float.isNaN(progress) || progress > 1.0f || progress < 0.0f) {
             return;
         }
-        setRadius(settings.getMaxRadius() - settings.getMaxRadius() * progress);
+        applyProgress(progress);
     }
 
     public void setListener(ScalingLayoutListener scalingLayoutListener) {
@@ -260,22 +267,23 @@ public class ScalingLayout extends FrameLayout {
     }
 
     /**
-     * Set radius will update layout radius
-     * Also layouts margins and width depend on
-     * radius. So If you update radius, your layout's width
-     * and margins will be updated.
+     * Applies given progress to the layout. Radius, width and
+     * margins of the layout are calculated from progress.
      *
-     * @param radius
+     * @param progress
      */
-    private void setRadius(float radius) {
-        if (radius < 0 || Float.isNaN(radius) || !settings.isInitialized()) {
+    private void applyProgress(float progress) {
+        if (Float.isNaN(progress) || !settings.isInitialized()) {
             return;
         }
 
-        updateCurrentRadius(radius);
-        updateCurrentWidth(currentRadius);
-        updateCurrentMargins(currentRadius);
-        updateState(currentRadius);
+        currentProgress = ScalingMath.clampProgress(progress);
+        currentRadius = ScalingMath.radiusFor(settings.getMaxRadius(), currentProgress);
+        currentWidth = ScalingMath.widthFor(settings.getInitialWidth(), settings.getMaxWidth(), currentProgress);
+        for (int i = 0; i < currentMargins.length; i++) {
+            currentMargins[i] = ScalingMath.marginFor(maxMargins[i], currentProgress);
+        }
+        updateState();
         updateViewOutline(getHeight(), currentWidth, currentRadius);
 
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
@@ -288,60 +296,15 @@ public class ScalingLayout extends FrameLayout {
                             (int) currentMargins[3]);
         }
         requestLayout();
-    }
-
-    /**
-     * Update current radius
-     *
-     * @param radius
-     */
-    private void updateCurrentRadius(float radius) {
-        currentRadius = radius < settings.getMaxRadius() ? radius : settings.getMaxRadius();
-    }
-
-    /**
-     * Update layout width with given radius value
-     *
-     * @param currentRadius
-     */
-    private void updateCurrentWidth(float currentRadius) {
-        int diffPixel = settings.getMaxWidth() - settings.getInitialWidth();
-        float calculatedWidth = (diffPixel - (currentRadius * diffPixel / settings.getMaxRadius())) + settings.getInitialWidth();
-        if (calculatedWidth > settings.getMaxWidth()) {
-            currentWidth = settings.getMaxWidth();
-        } else if (calculatedWidth < settings.getInitialWidth()) {
-            currentWidth = settings.getInitialWidth();
-        } else {
-            currentWidth = (int) calculatedWidth;
-        }
-    }
-
-    /**
-     * Update layout margins with given radius value
-     *
-     * @param currentRadius
-     */
-    private void updateCurrentMargins(float currentRadius) {
-        currentMargins[0] = maxMargins[0] * currentRadius / settings.getMaxRadius();
-        currentMargins[1] = maxMargins[1] * currentRadius / settings.getMaxRadius();
-        currentMargins[2] = maxMargins[2] * currentRadius / settings.getMaxRadius();
-        currentMargins[3] = maxMargins[3] * currentRadius / settings.getMaxRadius();
+        invalidate();
     }
 
     /**
      * Updates layout state
-     *
-     * @param currentRadius
      */
-    private void updateState(float currentRadius) {
+    private void updateState() {
         State previousState = state;
-        if (currentRadius == 0) {
-            state = State.EXPANDED;
-        } else if (currentRadius == settings.getMaxRadius()) {
-            state = State.COLLAPSED;
-        } else {
-            state = State.PROGRESSING;
-        }
+        state = ScalingMath.stateFor(currentProgress);
 
         if (state != previousState || state == State.PROGRESSING) {
             notifyListener();
@@ -358,7 +321,7 @@ public class ScalingLayout extends FrameLayout {
             } else if (state == State.EXPANDED) {
                 scalingLayoutListener.onExpanded();
             } else {
-                scalingLayoutListener.onProgress(currentRadius / settings.getMaxRadius());
+                scalingLayoutListener.onProgress(1f - currentProgress);
             }
         }
     }
