@@ -11,8 +11,10 @@ import android.util.AttributeSet;
 public class ScalingLayoutSettings {
 
     private static final float DEFAULT_RADIUS_FACTOR = 1.0f;
+    private static final int DEFAULT_ANIMATION_DURATION = 200;
 
     private float radiusFactor;
+    private long animationDuration;
     private int initialWidth;
     private int maxWidth;
     private float maxRadius;
@@ -22,6 +24,7 @@ public class ScalingLayoutSettings {
     public ScalingLayoutSettings(Context context, AttributeSet attributeSet) {
         TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.ScalingLayout);
         radiusFactor = typedArray.getFloat(R.styleable.ScalingLayout_radiusFactor, DEFAULT_RADIUS_FACTOR);
+        animationDuration = Math.max(0, typedArray.getInt(R.styleable.ScalingLayout_animationDuration, DEFAULT_ANIMATION_DURATION));
         maxWidth = context.getResources().getDisplayMetrics().widthPixels;
         typedArray.recycle();
 
@@ -49,6 +52,14 @@ public class ScalingLayoutSettings {
 
     public float getMaxRadius() {
         return maxRadius;
+    }
+
+    public long getAnimationDuration() {
+        return animationDuration;
+    }
+
+    void setAnimationDuration(long animationDuration) {
+        this.animationDuration = Math.max(0, animationDuration);
     }
 
     public boolean isInitialized() {

@@ -1,5 +1,6 @@
 package iammert.com.view.scalinglib;
 
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,11 +11,12 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by mertsimsek on 30/09/2017.
@@ -122,7 +124,7 @@ public class ScalingLayout extends FrameLayout {
         setLayerType(LAYER_TYPE_HARDWARE, null);
 
         valueAnimator = ValueAnimator.ofFloat(0, 0);
-        valueAnimator.setDuration(200);
+        valueAnimator.setDuration(settings.getAnimationDuration());
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -244,6 +246,35 @@ public class ScalingLayout extends FrameLayout {
             return;
         }
         applyProgress(progress);
+    }
+
+    /**
+     * Current progress of the layout.
+     *
+     * @return value between 0.0f (collapsed) and 1.0f (expanded)
+     */
+    public float getProgress() {
+        return currentProgress;
+    }
+
+    /**
+     * Sets expand/collapse animation duration in milliseconds.
+     * Can also be set from XML with app:animationDuration.
+     *
+     * @param durationMillis
+     */
+    public void setAnimationDuration(long durationMillis) {
+        settings.setAnimationDuration(durationMillis);
+        valueAnimator.setDuration(settings.getAnimationDuration());
+    }
+
+    /**
+     * Sets interpolator used by expand/collapse animation.
+     *
+     * @param interpolator
+     */
+    public void setInterpolator(@Nullable TimeInterpolator interpolator) {
+        valueAnimator.setInterpolator(interpolator);
     }
 
     public void setListener(ScalingLayoutListener scalingLayoutListener) {
