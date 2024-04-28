@@ -11,6 +11,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -76,6 +78,17 @@ public class ScalingLayout extends FrameLayout {
      * progress and collapse/expand
      */
     private ScalingLayoutListener scalingLayoutListener;
+
+    /**
+     * Progress restored from saved instance state. It is applied
+     * once the layout is measured for the first time.
+     */
+    private float pendingProgress = -1f;
+
+    /**
+     * Target progress of the running expand/collapse animation.
+     */
+    private float animationTargetProgress;
 
     /**
      * CustomOutline for elevation shadows
@@ -161,6 +174,17 @@ public class ScalingLayout extends FrameLayout {
                 viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
                 setOutlineProvider(viewOutline);
             }
+
+            if (pendingProgress > 0f) {
+                final float restoredProgress = pendingProgress;
+                post(new Runnable() {
+                    @Override
+                    public void run() {
+                        applyProgress(restoredProgress);
+                    }
+                });
+            }
+            pendingProgress = -1f;
         }
 
         rectF.set(0, 0, w, h);
@@ -224,8 +248,32 @@ public class ScalingLayout extends FrameLayout {
         if (currentProgress == targetProgress) {
             return;
         }
+        animationTargetProgress = targetProgress;
         valueAnimator.setFloatValues(currentProgress, targetProgress);
         valueAnimator.start();
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        SavedState savedState = new SavedState(super.onSaveInstanceState());
+        // If an animation is running, save where it is heading to.
+        savedState.progress = valueAnimator.isRunning() ? animationTargetProgress : currentProgress;
+        return savedState;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        if (settings.isInitialized()) {
+            applyProgress(savedState.progress);
+        } else {
+            pendingProgress = savedState.progress;
+        }
     }
 
     @Override
@@ -355,5 +403,37 @@ public class ScalingLayout extends FrameLayout {
                 scalingLayoutListener.onProgress(1f - currentProgress);
             }
         }
+    }
+
+    static class SavedState extends BaseSavedState {
+
+        float progress;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            progress = in.readFloat();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeFloat(progress);
+        }
+
+        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
     }
 }
