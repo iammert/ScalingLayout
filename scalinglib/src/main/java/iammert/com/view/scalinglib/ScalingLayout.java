@@ -2,7 +2,6 @@ package iammert.com.view.scalinglib;
 
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -10,7 +9,6 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -112,7 +110,6 @@ public class ScalingLayout extends FrameLayout {
         init(context, attrs);
     }
 
-    @SuppressLint("NewApi")
     public ScalingLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs);
@@ -170,10 +167,8 @@ public class ScalingLayout extends FrameLayout {
             currentWidth = w;
             currentProgress = 0f;
             currentRadius = settings.getMaxRadius();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
-                setOutlineProvider(viewOutline);
-            }
+            viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
+            setOutlineProvider(viewOutline);
 
             if (pendingProgress > 0f) {
                 final float restoredProgress = pendingProgress;
@@ -337,7 +332,7 @@ public class ScalingLayout extends FrameLayout {
      * @param radius
      */
     private void updateViewOutline(int height, int width, float radius) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && viewOutline != null) {
+        if (viewOutline != null) {
             viewOutline.setHeight(height);
             viewOutline.setWidth(width);
             viewOutline.setRadius(radius);

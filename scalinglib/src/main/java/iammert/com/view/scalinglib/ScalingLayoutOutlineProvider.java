@@ -1,15 +1,12 @@
 package iammert.com.view.scalinglib;
 
 import android.graphics.Outline;
-import android.os.Build;
-import androidx.annotation.RequiresApi;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 
 /**
  * Created by mertsimsek on 08/01/2018.
  */
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class ScalingLayoutOutlineProvider extends ViewOutlineProvider {
 
     private int width;
