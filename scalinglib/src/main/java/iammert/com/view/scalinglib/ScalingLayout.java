@@ -395,7 +395,7 @@ public class ScalingLayout extends FrameLayout {
             } else if (state == State.EXPANDED) {
                 scalingLayoutListener.onExpanded();
             } else {
-                scalingLayoutListener.onProgress(1f - currentProgress);
+                scalingLayoutListener.onProgress(currentProgress);
             }
         }
     }
