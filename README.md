@@ -1,4 +1,6 @@
-# ScalingLayout 
+# ScalingLayout
+[![Android CI](https://github.com/iammert/ScalingLayout/actions/workflows/android.yml/badge.svg)](https://github.com/iammert/ScalingLayout/actions/workflows/android.yml) [![](https://jitpack.io/v/iammert/ScalingLayout.svg)](https://jitpack.io/#iammert/ScalingLayout)
+
 Scale your layout on user interaction. [Live Demo](https://www.youtube.com/watch?v=wA41H0UMoHQ)
 
 Motivated by layout in [Blinkist](https://play.google.com/store/apps/details?id=com.blinkslabs.blinkist.android) app and search bar in [Spotify](https://play.google.com/store/apps/details?id=com.spotify.music) app.
@@ -6,13 +8,13 @@ Motivated by layout in [Blinkist](https://play.google.com/store/apps/details?id=
 <img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/cover_scaling.png"/>
 
 ## Demo
-<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_behavior.gif"/>
+<img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/gif_behavior.gif"/>
 
 ## Fab Demo
-<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_fab.gif"/>
+<img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/gif_fab.gif"/>
 
 ## Spotify Search Demo
-<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_searchbar.gif"/>
+<img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/gif_searchbar.gif"/>
 
 ## Usage
 ```xml
@@ -20,18 +22,25 @@ Motivated by layout in [Blinkist](https://play.google.com/store/apps/details?id=
         android:id="@+id/scalingLayout"
         android:layout_width="300dp"
         android:layout_height="48dp"
-        app:radiusFactor="1">
-        
+        app:radiusFactor="1"
+        app:animationDuration="200">
+
         <!-- Your content here -->
-        
+
 </iammert.com.view.scalinglib.ScalingLayout>
 ```
 
 ```java
-scalingLayout.expand(); //use this if you want to expand all
-scalingLayout.collapse(); //user this if you want to collapse view to initial state.
-scalingLayout.setProgress(float progress); //1 is fully expanded, 0 is initial state.
+scalingLayout.expand(); // expands the layout to full width
+scalingLayout.collapse(); // collapses the layout to its initial state
+scalingLayout.setProgress(float progress); // 1 is fully expanded, 0 is initial state
+scalingLayout.getProgress(); // current progress between 0 and 1
+
+scalingLayout.setAnimationDuration(300); // expand/collapse duration in milliseconds
+scalingLayout.setInterpolator(new FastOutSlowInInterpolator());
 ```
+
+The expanded/collapsed state is saved and restored automatically on configuration changes (give the layout an `android:id`).
 
 ## Listener
 ```java
@@ -43,15 +52,18 @@ scalingLayout.setListener(new ScalingLayoutListener() {
     public void onExpanded() {}
 
     @Override
-    public void onProgress(float progress) {}
+    public void onProgress(float progress) {} // 0 is collapsed, 1 is expanded
 });
 ```
 
-## Attribute
-```app:radiusFactor``` value is between 0 and 1 float value. 1 = full rounded corner. 0 = no rounded corner.
+## Attributes
+| Attribute | Format | Default | Description |
+|---|---|---|---|
+| `app:radiusFactor` | float | `1` | Between 0 and 1. 1 = fully rounded corners, 0 = no rounded corners. |
+| `app:animationDuration` | integer | `200` | Expand/collapse animation duration in milliseconds. |
 
-## ScalingLayoutBehaviour
-<img src="https://github.com/iammert/ScalingLayout/blob/master/art/gif_behavior.gif"/>
+## ScalingLayoutBehavior
+<img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/gif_behavior.gif"/>
 
 ```xml
 <iammert.com.view.scalinglib.ScalingLayout
@@ -60,25 +72,43 @@ scalingLayout.setListener(new ScalingLayoutListener() {
         android:layout_height="48dp"
         app:radiusFactor="1"
         app:layout_behavior="iammert.com.view.scalinglib.ScalingLayoutBehavior">
-        
+
         <!-- Your content here -->
-        
+
 </iammert.com.view.scalinglib.ScalingLayout>
 ```
 
 ## Download
-<a href='https://ko-fi.com/P5P872LP' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
-
+Add JitPack to your repositories in `settings.gradle`:
 
 ```gradle
-maven { url 'https://jitpack.io' }
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
 ```
+
+Add the dependency:
 
 ```gradle
 dependencies {
-  compile 'com.github.iammert:ScalingLayout:1.2.1'
+    implementation 'com.github.iammert:ScalingLayout:2.0.0'
 }
 ```
+
+Requires minSdk 21 and AndroidX. Use `1.2.1` if your project still uses the Android Support Library.
+
+### Migrating from 1.x
+- The library now depends on AndroidX and Material Components instead of the Support Library.
+- `ScalingLayoutListener.onProgress` now reports 0 for collapsed and 1 for expanded, the same scale as `setProgress`. Use `1 - progress` if you relied on the old value.
+
+See [CHANGELOG.md](CHANGELOG.md) for all changes.
+
+<a href='https://ko-fi.com/P5P872LP' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
 License
 --------
 
@@ -96,8 +126,3 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-
-
-
-
