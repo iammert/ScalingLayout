@@ -78,8 +78,9 @@ public class ScalingLayout extends FrameLayout {
     private ScalingLayoutListener scalingLayoutListener;
 
     /**
-     * Progress restored from saved instance state. It is applied
-     * once the layout is measured for the first time.
+     * Progress requested before the first layout, either restored from
+     * saved instance state or set through expand/collapse/setProgress.
+     * It is applied once the layout is measured for the first time.
      */
     private float pendingProgress = -1f;
 
@@ -170,7 +171,7 @@ public class ScalingLayout extends FrameLayout {
             viewOutline = new ScalingLayoutOutlineProvider(w, h, currentRadius);
             setOutlineProvider(viewOutline);
 
-            if (pendingProgress > 0f) {
+            if (pendingProgress >= 0f) {
                 final float restoredProgress = pendingProgress;
                 post(new Runnable() {
                     @Override
@@ -217,14 +218,16 @@ public class ScalingLayout extends FrameLayout {
     }
 
     /**
-     * Expand layout to screen
+     * Expand layout to screen.
+     * If the layout is not measured yet, it is expanded right after the first layout.
      */
     public void expand() {
         animateProgressTo(1f);
     }
 
     /**
-     * Collapse layout to initial position
+     * Collapse layout to initial position.
+     * If the layout is not measured yet, it stays collapsed after the first layout.
      */
     public void collapse() {
         animateProgressTo(0f);
@@ -237,6 +240,10 @@ public class ScalingLayout extends FrameLayout {
      * @param targetProgress
      */
     private void animateProgressTo(float targetProgress) {
+        if (!settings.isInitialized()) {
+            pendingProgress = targetProgress;
+            return;
+        }
         if (valueAnimator.isRunning()) {
             valueAnimator.cancel();
         }
@@ -286,6 +293,10 @@ public class ScalingLayout extends FrameLayout {
      */
     public void setProgress(float progress) {
         if (Float.isNaN(progress) || progress > 1.0f || progress < 0.0f) {
+            return;
+        }
+        if (!settings.isInitialized()) {
+            pendingProgress = progress;
             return;
         }
         applyProgress(progress);
