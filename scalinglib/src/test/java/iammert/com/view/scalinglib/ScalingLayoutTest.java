@@ -80,6 +80,18 @@ public class ScalingLayoutTest {
         assertEquals(INITIAL_WIDTH, scalingLayout.getWidth());
     }
 
+    @Test
+    public void setProgress_cancelsRunningAnimation() {
+        layout();
+
+        scalingLayout.expand();
+        scalingLayout.setProgress(0.25f);
+        finishAnimation();
+
+        assertEquals(State.PROGRESSING, scalingLayout.getState());
+        assertEquals(0.25f, scalingLayout.getProgress(), 0.001f);
+    }
+
     /**
      * Measures and lays out the hierarchy, then runs posted runnables
      * and lays out again so that pending changes are reflected.

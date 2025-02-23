@@ -287,7 +287,8 @@ public class ScalingLayout extends FrameLayout {
     /**
      * This method takes a progress parameter value
      * between 0.0f and 1.0f. And apply this
-     * progress value to layout.
+     * progress value to layout. A running expand/collapse
+     * animation is cancelled.
      *
      * @param progress
      */
@@ -299,6 +300,7 @@ public class ScalingLayout extends FrameLayout {
             pendingProgress = progress;
             return;
         }
+        valueAnimator.cancel();
         applyProgress(progress);
     }
 
