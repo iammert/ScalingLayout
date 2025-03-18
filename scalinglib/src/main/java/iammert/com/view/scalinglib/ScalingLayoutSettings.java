@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 public class ScalingLayoutSettings {
 
     private static final float DEFAULT_RADIUS_FACTOR = 1.0f;
+    private static final float MIN_RADIUS_FACTOR = 0.0f;
+    private static final float MAX_RADIUS_FACTOR = 1.0f;
     private static final int DEFAULT_ANIMATION_DURATION = 200;
 
     private float radiusFactor;
@@ -28,9 +30,10 @@ public class ScalingLayoutSettings {
         maxWidth = context.getResources().getDisplayMetrics().widthPixels;
         typedArray.recycle();
 
-        if (radiusFactor > DEFAULT_RADIUS_FACTOR) {
+        if (Float.isNaN(radiusFactor)) {
             radiusFactor = DEFAULT_RADIUS_FACTOR;
         }
+        radiusFactor = Math.max(MIN_RADIUS_FACTOR, Math.min(MAX_RADIUS_FACTOR, radiusFactor));
     }
 
     public void initialize(int width, int height) {
