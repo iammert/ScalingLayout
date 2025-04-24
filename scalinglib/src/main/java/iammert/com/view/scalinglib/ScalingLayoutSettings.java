@@ -53,6 +53,17 @@ public class ScalingLayoutSettings {
         return maxWidth;
     }
 
+    /**
+     * Updates the width the layout expands to. Non positive values are ignored.
+     *
+     * @param maxWidth
+     */
+    void setMaxWidth(int maxWidth) {
+        if (maxWidth > 0) {
+            this.maxWidth = maxWidth;
+        }
+    }
+
     public float getMaxRadius() {
         return maxRadius;
     }

@@ -6,7 +6,6 @@ import static org.robolectric.Shadows.shadowOf;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Looper;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import org.junit.Before;
@@ -20,8 +19,6 @@ import java.time.Duration;
 @RunWith(RobolectricTestRunner.class)
 public class ScalingLayoutTest {
 
-    private static final int PARENT_WIDTH = 1080;
-    private static final int PARENT_HEIGHT = 1920;
     private static final int INITIAL_WIDTH = 300;
     private static final int HEIGHT = 100;
 
@@ -81,6 +78,27 @@ public class ScalingLayoutTest {
     }
 
     @Test
+    public void expand_fillsParentWidth() {
+        layout();
+
+        scalingLayout.expand();
+        finishAnimation();
+
+        assertEquals(parent.getWidth(), scalingLayout.getWidth());
+    }
+
+    @Test
+    public void expand_respectsParentPadding() {
+        parent.setPadding(40, 0, 40, 0);
+        layout();
+
+        scalingLayout.expand();
+        finishAnimation();
+
+        assertEquals(parent.getWidth() - 80, scalingLayout.getWidth());
+    }
+
+    @Test
     public void setProgress_cancelsRunningAnimation() {
         layout();
 
@@ -93,24 +111,13 @@ public class ScalingLayoutTest {
     }
 
     /**
-     * Measures and lays out the hierarchy, then runs posted runnables
-     * and lays out again so that pending changes are reflected.
+     * Runs pending layout passes and posted runnables.
      */
     void layout() {
-        measureAndLayout();
         shadowOf(Looper.getMainLooper()).idle();
-        measureAndLayout();
     }
 
     void finishAnimation() {
         shadowOf(Looper.getMainLooper()).idleFor(Duration.ofSeconds(1));
-        measureAndLayout();
-    }
-
-    private void measureAndLayout() {
-        parent.measure(
-                View.MeasureSpec.makeMeasureSpec(PARENT_WIDTH, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(PARENT_HEIGHT, View.MeasureSpec.EXACTLY));
-        parent.layout(0, 0, PARENT_WIDTH, PARENT_HEIGHT);
     }
 }

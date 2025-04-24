@@ -13,6 +13,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -163,6 +164,7 @@ public class ScalingLayout extends FrameLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        settings.setMaxWidth(getParentContentWidth());
         if (!settings.isInitialized()) {
             settings.initialize(w, h);
             currentWidth = w;
@@ -186,6 +188,22 @@ public class ScalingLayout extends FrameLayout {
         rectF.set(0, 0, w, h);
         updateViewOutline(h, currentWidth, currentRadius);
         invalidate();
+    }
+
+    /**
+     * Width available inside the parent. The layout expands to this width
+     * instead of the screen width, so padded parents, split screen and
+     * multi window modes are respected.
+     *
+     * @return parent width without horizontal padding, or 0 if unknown
+     */
+    private int getParentContentWidth() {
+        ViewParent parent = getParent();
+        if (!(parent instanceof ViewGroup)) {
+            return 0;
+        }
+        ViewGroup parentGroup = (ViewGroup) parent;
+        return parentGroup.getWidth() - parentGroup.getPaddingLeft() - parentGroup.getPaddingRight();
     }
 
     @Override
