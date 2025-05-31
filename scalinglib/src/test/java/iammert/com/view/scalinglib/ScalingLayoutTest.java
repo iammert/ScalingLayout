@@ -5,7 +5,9 @@ import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.os.Looper;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import org.junit.Before;
@@ -13,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
 import java.time.Duration;
 
@@ -28,6 +31,8 @@ public class ScalingLayoutTest {
 
     @Before
     public void setUp() {
+        // Layout direction is only resolved to RTL when the app declares RTL support.
+        RuntimeEnvironment.getApplication().getApplicationInfo().flags |= ApplicationInfo.FLAG_SUPPORTS_RTL;
         Activity activity = Robolectric.buildActivity(Activity.class).setup().get();
         context = activity;
         parent = new FrameLayout(context);
@@ -96,6 +101,40 @@ public class ScalingLayoutTest {
         finishAnimation();
 
         assertEquals(parent.getWidth() - 80, scalingLayout.getWidth());
+    }
+
+    @Test
+    public void margins_shrinkWithProgress() {
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(INITIAL_WIDTH, HEIGHT);
+        params.setMargins(20, 10, 40, 30);
+        scalingLayout.setLayoutParams(params);
+        layout();
+
+        scalingLayout.setProgress(0.5f);
+        layout();
+
+        assertEquals(10, params.leftMargin);
+        assertEquals(5, params.topMargin);
+        assertEquals(20, params.rightMargin);
+        assertEquals(15, params.bottomMargin);
+    }
+
+    @Test
+    public void relativeMargins_shrinkInRtlLayout() {
+        parent.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(INITIAL_WIDTH, HEIGHT);
+        params.setMarginStart(40);
+        params.setMarginEnd(20);
+        scalingLayout.setLayoutParams(params);
+        layout();
+
+        scalingLayout.setProgress(0.5f);
+        layout();
+
+        assertEquals(20, params.getMarginStart());
+        assertEquals(10, params.getMarginEnd());
+        assertEquals(20, params.rightMargin);
+        assertEquals(10, params.leftMargin);
     }
 
     @Test

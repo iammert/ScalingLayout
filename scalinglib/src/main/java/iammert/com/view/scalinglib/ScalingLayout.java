@@ -50,7 +50,8 @@ public class ScalingLayout extends FrameLayout {
 
     /**
      * If layout has margins, margin has to be change
-     * according to progress.
+     * according to progress. Margins are kept in
+     * start, top, end, bottom order to support RTL layouts.
      */
     private float[] maxMargins;
     private float[] currentMargins;
@@ -153,9 +154,9 @@ public class ScalingLayout extends FrameLayout {
             currentMargins = new float[4];
             if (getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
                 ViewGroup.MarginLayoutParams marginLayoutParams = ((ViewGroup.MarginLayoutParams) getLayoutParams());
-                currentMargins[0] = maxMargins[0] = marginLayoutParams.leftMargin;
+                currentMargins[0] = maxMargins[0] = marginLayoutParams.getMarginStart();
                 currentMargins[1] = maxMargins[1] = marginLayoutParams.topMargin;
-                currentMargins[2] = maxMargins[2] = marginLayoutParams.rightMargin;
+                currentMargins[2] = maxMargins[2] = marginLayoutParams.getMarginEnd();
                 currentMargins[3] = maxMargins[3] = marginLayoutParams.bottomMargin;
             }
         }
@@ -394,11 +395,20 @@ public class ScalingLayout extends FrameLayout {
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
         layoutParams.width = currentWidth;
         if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
-            ((ViewGroup.MarginLayoutParams) layoutParams)
-                    .setMargins((int) currentMargins[0],
-                            (int) currentMargins[1],
-                            (int) currentMargins[2],
-                            (int) currentMargins[3]);
+            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) layoutParams;
+            int start = (int) currentMargins[0];
+            int end = (int) currentMargins[2];
+            boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+            // Absolute margins are what parents use while laying out children,
+            // relative ones are kept in sync so a later RTL resolution does not
+            // restore the initial values.
+            marginLayoutParams.setMargins(
+                    isRtl ? end : start,
+                    (int) currentMargins[1],
+                    isRtl ? start : end,
+                    (int) currentMargins[3]);
+            marginLayoutParams.setMarginStart(start);
+            marginLayoutParams.setMarginEnd(end);
         }
         requestLayout();
         invalidate();
