@@ -28,7 +28,7 @@ public class ScalingLayout extends FrameLayout {
     /**
      * Settings
      */
-    ScalingLayoutSettings settings;
+    private ScalingLayoutSettings settings;
 
     /**
      * Current progress. 0 is collapsed, 1 is fully expanded.
@@ -100,31 +100,31 @@ public class ScalingLayout extends FrameLayout {
 
     public ScalingLayout(@NonNull Context context) {
         super(context);
-        init(context, null);
+        setup(context, null);
     }
 
     public ScalingLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs);
+        setup(context, attrs);
     }
 
     public ScalingLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs);
+        setup(context, attrs);
     }
 
     public ScalingLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(context, attrs);
+        setup(context, attrs);
     }
 
     /**
-     * Initialize layout
+     * Initialize layout. Called only from constructors.
      *
      * @param context
      * @param attributeSet
      */
-    public void init(Context context, AttributeSet attributeSet) {
+    private void setup(Context context, @Nullable AttributeSet attributeSet) {
         settings = new ScalingLayoutSettings(context, attributeSet);
         state = State.COLLAPSED;
 
