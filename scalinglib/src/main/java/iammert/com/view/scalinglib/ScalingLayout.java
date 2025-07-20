@@ -16,6 +16,9 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -74,10 +77,10 @@ public class ScalingLayout extends FrameLayout {
     private ValueAnimator valueAnimator;
 
     /**
-     * Listener to notify observer about
+     * Listeners to notify observers about
      * progress and collapse/expand
      */
-    private ScalingLayoutListener scalingLayoutListener;
+    private final List<ScalingLayoutListener> listeners = new ArrayList<>();
 
     /**
      * Progress requested before the first layout, either restored from
@@ -352,8 +355,36 @@ public class ScalingLayout extends FrameLayout {
         valueAnimator.setInterpolator(interpolator);
     }
 
-    public void setListener(ScalingLayoutListener scalingLayoutListener) {
-        this.scalingLayoutListener = scalingLayoutListener;
+    /**
+     * Replaces all registered listeners with the given listener.
+     *
+     * @param scalingLayoutListener listener to set, or null to remove all listeners
+     */
+    public void setListener(@Nullable ScalingLayoutListener scalingLayoutListener) {
+        listeners.clear();
+        if (scalingLayoutListener != null) {
+            listeners.add(scalingLayoutListener);
+        }
+    }
+
+    /**
+     * Registers a listener in addition to the ones already registered.
+     *
+     * @param scalingLayoutListener
+     */
+    public void addListener(@NonNull ScalingLayoutListener scalingLayoutListener) {
+        if (!listeners.contains(scalingLayoutListener)) {
+            listeners.add(scalingLayoutListener);
+        }
+    }
+
+    /**
+     * Removes a previously registered listener.
+     *
+     * @param scalingLayoutListener
+     */
+    public void removeListener(@NonNull ScalingLayoutListener scalingLayoutListener) {
+        listeners.remove(scalingLayoutListener);
     }
 
     /**
@@ -430,13 +461,14 @@ public class ScalingLayout extends FrameLayout {
      * Notify observers about change
      */
     private void notifyListener() {
-        if (scalingLayoutListener != null) {
+        // Copy so listeners can remove themselves while being notified.
+        for (ScalingLayoutListener listener : new ArrayList<>(listeners)) {
             if (state == State.COLLAPSED) {
-                scalingLayoutListener.onCollapsed();
+                listener.onCollapsed();
             } else if (state == State.EXPANDED) {
-                scalingLayoutListener.onExpanded();
+                listener.onExpanded();
             } else {
-                scalingLayoutListener.onProgress(currentProgress);
+                listener.onProgress(currentProgress);
             }
         }
     }

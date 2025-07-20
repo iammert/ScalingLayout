@@ -149,6 +149,69 @@ public class ScalingLayoutTest {
         assertEquals(0.25f, scalingLayout.getProgress(), 0.001f);
     }
 
+    @Test
+    public void listeners_areNotifiedOncePerStateChange() {
+        RecordingListener first = new RecordingListener();
+        RecordingListener second = new RecordingListener();
+        scalingLayout.addListener(first);
+        scalingLayout.addListener(second);
+        layout();
+
+        scalingLayout.expand();
+        finishAnimation();
+        scalingLayout.setProgress(1f);
+
+        assertEquals(1, first.expanded);
+        assertEquals(1, second.expanded);
+        assertEquals(0, first.collapsed);
+    }
+
+    @Test
+    public void removedListener_isNotNotified() {
+        RecordingListener listener = new RecordingListener();
+        scalingLayout.addListener(listener);
+        scalingLayout.removeListener(listener);
+        layout();
+
+        scalingLayout.expand();
+        finishAnimation();
+
+        assertEquals(0, listener.expanded);
+    }
+
+    @Test
+    public void setListener_replacesRegisteredListeners() {
+        RecordingListener first = new RecordingListener();
+        RecordingListener second = new RecordingListener();
+        scalingLayout.addListener(first);
+        scalingLayout.setListener(second);
+        layout();
+
+        scalingLayout.setProgress(1f);
+
+        assertEquals(0, first.expanded);
+        assertEquals(1, second.expanded);
+    }
+
+    private static class RecordingListener implements ScalingLayoutListener {
+        int collapsed;
+        int expanded;
+
+        @Override
+        public void onCollapsed() {
+            collapsed++;
+        }
+
+        @Override
+        public void onExpanded() {
+            expanded++;
+        }
+
+        @Override
+        public void onProgress(float progress) {
+        }
+    }
+
     /**
      * Runs pending layout passes and posted runnables.
      */
