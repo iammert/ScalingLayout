@@ -2,6 +2,7 @@ package iammert.com.view.scalinglib;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -19,7 +20,24 @@ public class ScalingLayoutBehavior extends CoordinatorLayout.Behavior<ScalingLay
 
     public ScalingLayoutBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
-        toolbarHeightInPixel = context.getResources().getDimensionPixelSize(R.dimen.sl_toolbar_size);
+        toolbarHeightInPixel = resolveToolbarHeight(context);
+    }
+
+    /**
+     * Uses the action bar size of the current theme, which differs on tablets
+     * and in custom themes. Falls back to 56dp when the theme does not define it.
+     */
+    static float resolveToolbarHeight(Context context) {
+        TypedValue typedValue = new TypedValue();
+        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, typedValue, true)
+                && typedValue.type == TypedValue.TYPE_DIMENSION) {
+            return TypedValue.complexToDimensionPixelSize(typedValue.data, context.getResources().getDisplayMetrics());
+        }
+        return context.getResources().getDimensionPixelSize(R.dimen.sl_toolbar_size);
+    }
+
+    float getToolbarHeight() {
+        return toolbarHeightInPixel;
     }
 
     @Override
