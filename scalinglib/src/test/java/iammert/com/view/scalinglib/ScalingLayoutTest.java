@@ -1,6 +1,8 @@
 package iammert.com.view.scalinglib;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Activity;
@@ -8,7 +10,10 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Looper;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
+
+import androidx.core.view.ViewCompat;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -191,6 +196,34 @@ public class ScalingLayoutTest {
 
         assertEquals(0, first.expanded);
         assertEquals(1, second.expanded);
+    }
+
+    @Test
+    public void accessibility_exposesExpandActionWhenCollapsed() {
+        layout();
+
+        AccessibilityNodeInfo info = scalingLayout.createAccessibilityNodeInfo();
+
+        assertTrue(info.getActionList().contains(AccessibilityNodeInfo.AccessibilityAction.ACTION_EXPAND));
+        assertFalse(info.getActionList().contains(AccessibilityNodeInfo.AccessibilityAction.ACTION_COLLAPSE));
+        assertEquals("Collapsed", String.valueOf(ViewCompat.getStateDescription(scalingLayout)));
+    }
+
+    @Test
+    public void accessibility_expandAndCollapseActions() {
+        layout();
+
+        assertTrue(scalingLayout.performAccessibilityAction(AccessibilityNodeInfo.ACTION_EXPAND, null));
+        finishAnimation();
+        assertEquals(State.EXPANDED, scalingLayout.getState());
+        assertEquals("Expanded", String.valueOf(ViewCompat.getStateDescription(scalingLayout)));
+
+        AccessibilityNodeInfo info = scalingLayout.createAccessibilityNodeInfo();
+        assertTrue(info.getActionList().contains(AccessibilityNodeInfo.AccessibilityAction.ACTION_COLLAPSE));
+
+        assertTrue(scalingLayout.performAccessibilityAction(AccessibilityNodeInfo.ACTION_COLLAPSE, null));
+        finishAnimation();
+        assertEquals(State.COLLAPSED, scalingLayout.getState());
     }
 
     private static class RecordingListener implements ScalingLayoutListener {

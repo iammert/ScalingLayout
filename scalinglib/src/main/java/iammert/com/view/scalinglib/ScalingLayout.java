@@ -9,11 +9,13 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 
 /**
  * Created by mertsimsek on 30/09/2017.
@@ -130,6 +133,7 @@ public class ScalingLayout extends FrameLayout {
     private void setup(Context context, @Nullable AttributeSet attributeSet) {
         settings = new ScalingLayoutSettings(context, attributeSet);
         state = State.COLLAPSED;
+        updateStateDescription();
 
         path = new Path();
         rectF = new RectF(0, 0, 0, 0);
@@ -452,9 +456,52 @@ public class ScalingLayout extends FrameLayout {
         State previousState = state;
         state = ScalingMath.stateFor(currentProgress);
 
+        if (state != previousState) {
+            updateStateDescription();
+        }
         if (state != previousState || state == State.PROGRESSING) {
             notifyListener();
         }
+    }
+
+    /**
+     * Lets accessibility services announce whether the layout is expanded.
+     */
+    private void updateStateDescription() {
+        if (state == State.EXPANDED) {
+            ViewCompat.setStateDescription(this, getContext().getString(R.string.sl_state_expanded));
+        } else if (state == State.COLLAPSED) {
+            ViewCompat.setStateDescription(this, getContext().getString(R.string.sl_state_collapsed));
+        }
+    }
+
+    @Override
+    public CharSequence getAccessibilityClassName() {
+        return ScalingLayout.class.getName();
+    }
+
+    @Override
+    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(info);
+        if (state != State.EXPANDED) {
+            info.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_EXPAND);
+        }
+        if (state != State.COLLAPSED) {
+            info.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_COLLAPSE);
+        }
+    }
+
+    @Override
+    public boolean performAccessibilityAction(int action, @Nullable Bundle arguments) {
+        if (action == AccessibilityNodeInfo.ACTION_EXPAND && state != State.EXPANDED) {
+            expand();
+            return true;
+        }
+        if (action == AccessibilityNodeInfo.ACTION_COLLAPSE && state != State.COLLAPSED) {
+            collapse();
+            return true;
+        }
+        return super.performAccessibilityAction(action, arguments);
     }
 
     /**

@@ -1,0 +1,4 @@
+<resources>
+    <string name="sl_state_collapsed">Collapsed</string>
+    <string name="sl_state_expanded">Expanded</string>
+</resources>
