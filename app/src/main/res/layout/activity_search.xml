@@ -12,10 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
+        android:focusable="true"
         android:stateListAnimator="@animator/sl_state_animator"
         app:radiusFactor="0.2">
 
@@ -28,7 +29,7 @@
                 android:id="@+id/searchLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_centerVertical="true"
                 android:visibility="invisible">
 
@@ -37,17 +38,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:contentDescription="@string/cd_back"
                     android:src="@drawable/ic_arrow_back_white_24dp" />
 
                 <EditText
                     android:id="@+id/editTextSearch"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="24dp"
-                    android:layout_toRightOf="@+id/arrowBack"
+                    android:layout_marginStart="24dp"
+                    android:layout_toEndOf="@+id/arrowBack"
                     android:layout_centerVertical="true"
                     android:background="@null"
-                    android:textColor="#ffffff"/>
+                    android:hint="@string/search"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#80ffffff"/>
 
             </RelativeLayout>
 
@@ -57,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Ara"
+                android:text="@string/search"
                 android:textColor="#ffffff"
                 android:textStyle="bold" />
 

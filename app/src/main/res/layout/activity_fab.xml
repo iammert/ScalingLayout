@@ -27,16 +27,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:contentDescription="@string/cd_sort"
                 android:src="@drawable/ic_sort_white_24dp" />
 
             <LinearLayout
+                android:baselineAligned="false"
                 android:id="@+id/filterLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:visibility="invisible">
 
                 <RelativeLayout
@@ -50,17 +52,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:contentDescription="@null"
                         android:src="@drawable/ic_date_range_white_24dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@+id/imageViewWatchNow"
+                        android:layout_marginStart="8dp"
+                        android:layout_toEndOf="@+id/imageViewWatchNow"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="Sort by date"
+                        android:text="@string/sort_by_date"
                         android:textColor="#ffffff"
                         android:textSize="18sp" />
 
@@ -77,17 +80,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:contentDescription="@null"
                         android:src="@drawable/ic_star_white_24dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@+id/imageViewWatchLater"
+                        android:layout_marginStart="8dp"
+                        android:layout_toEndOf="@+id/imageViewWatchLater"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="Sort by rate"
+                        android:text="@string/sort_by_rate"
                         android:textColor="#ffffff"
                         android:textSize="18sp" />
 

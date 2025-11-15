@@ -8,19 +8,19 @@
         android:id="@+id/demo1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Collapsing Demo"/>
+        android:text="@string/demo_collapsing"/>
 
     <Button
         android:id="@+id/demo2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Floating Action Button"/>
+        android:text="@string/demo_fab"/>
 
     <Button
         android:id="@+id/demo3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search Bar Demo"/>
+        android:text="@string/demo_search"/>
 
 </LinearLayout>
 

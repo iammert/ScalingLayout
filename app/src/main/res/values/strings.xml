@@ -1,5 +1,18 @@
 <resources>
     <string name="app_name">ScalingLayout</string>
 
+    <string name="demo_collapsing">Collapsing Demo</string>
+    <string name="demo_fab">Floating Action Button</string>
+    <string name="demo_search">Search Bar Demo</string>
+    <string name="movie_title">Mother!</string>
+    <string name="watch_now">Watch Now</string>
+    <string name="remind_later">Remind Later</string>
+    <string name="sort_by_date">Sort by date</string>
+    <string name="sort_by_rate">Sort by rate</string>
+    <string name="search">Search</string>
+    <string name="cd_cover">Movie cover</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_sort">Sort</string>
+
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, an sit fugit officiis deserunt, audiam disputando at sit. Eu mel expetenda voluptatibus. Ius no accusam scripserit.\n\n Sea error iracundia ne, duo ne dicat partem sententiae. Nibh admodum facilisi ius in. Ius legere intellegam ei, in zril deserunt qui.At alii audire scripta mea, errem disputando quo in.\n\n Elit vocent legimus cum ei. Eu nonumes eligendi pericula sit. Ceteros omnesque facilisis id vix, at dico choro perpetua est, et dolore oblique vituperata qui. \n\nLorem ipsum dolor sit amet, an sit fugit officiis deserunt, audiam disputando at sit. Eu mel expetenda voluptatibus. Ius no accusam scripserit.\n\n Sea error iracundia ne, duo ne dicat partem sententiae. Nibh admodum facilisi ius in. Ius legere intellegam ei, in zril deserunt qui.At alii audire scripta mea, errem disputando quo in.\n\n Elit vocent legimus cum ei. Eu nonumes eligendi pericula sit. Ceteros omnesque facilisis id vix, at dico choro perpetua est, et dolore oblique vituperata qui.\n\nLorem ipsum dolor sit amet, an sit fugit officiis deserunt, audiam disputando at sit. Eu mel expetenda voluptatibus. Ius no accusam scripserit.\n\n Sea error iracundia ne, duo ne dicat partem sententiae. Nibh admodum facilisi ius in. Ius legere intellegam ei, in zril deserunt qui.At alii audire scripta mea, errem disputando quo in.\n\n Elit vocent legimus cum ei. Eu nonumes eligendi pericula sit. Ceteros omnesque facilisis id vix, at dico choro perpetua est, et dolore oblique vituperata qui. \n\nLorem ipsum dolor sit amet, an sit fugit officiis deserunt, audiam disputando at sit. Eu mel expetenda voluptatibus. Ius no accusam scripserit.\n\n Sea error iracundia ne, duo ne dicat partem sententiae. Nibh admodum facilisi ius in. Ius legere intellegam ei, in zril deserunt qui.At alii audire scripta mea, errem disputando quo in.\n\n Elit vocent legimus cum ei. Eu nonumes eligendi pericula sit. Ceteros omnesque facilisis id vix, at dico choro perpetua est, et dolore oblique vituperata qui.</string>
 </resources>
