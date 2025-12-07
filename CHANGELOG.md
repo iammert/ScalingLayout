@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.1.0
+
+### Added
+- `addListener` and `removeListener` to register multiple listeners.
+- Accessibility actions to expand and collapse, and state description for screen readers.
+- RTL support for `layout_marginStart` and `layout_marginEnd`.
+
+### Changed
+- The layout expands to the width available inside its parent instead of the screen width.
+- `ScalingLayoutBehavior` uses the toolbar height of the theme instead of a fixed 56dp.
+- `init(Context, AttributeSet)` is no longer public.
+- The library no longer ships an `app_name` string resource.
+
+### Fixed
+- `expand()`, `collapse()` and `setProgress()` called before the first layout were ignored.
+- A running animation overwrote progress set with `setProgress()`.
+- Negative `app:radiusFactor` values produced a negative corner radius.
+
+### Build
+- Robolectric tests for the library and instrumented tests for the sample app.
+- Fixed lint warnings in the sample app.
+
 ## 2.0.0
 
 ### Breaking changes

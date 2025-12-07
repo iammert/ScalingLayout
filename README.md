@@ -41,10 +41,18 @@ scalingLayout.setInterpolator(new FastOutSlowInInterpolator());
 ```
 
 The expanded/collapsed state is saved and restored automatically on configuration changes (give the layout an `android:id`).
+Calls made before the first layout, for example from `onCreate`, are applied right after the layout is measured.
+
+The layout expands to the width available inside its parent and supports RTL layouts with `layout_marginStart`/`layout_marginEnd`.
+
+### Accessibility
+ScalingLayout exposes expand and collapse actions to TalkBack and announces whether it is expanded or collapsed.
 
 ## Listener
+Use `addListener`/`removeListener` to register multiple listeners. `setListener` replaces all registered listeners.
+
 ```java
-scalingLayout.setListener(new ScalingLayoutListener() {
+scalingLayout.addListener(new ScalingLayoutListener() {
     @Override
     public void onCollapsed() {}
 
@@ -64,6 +72,8 @@ scalingLayout.setListener(new ScalingLayoutListener() {
 
 ## ScalingLayoutBehavior
 <img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/gif_behavior.gif"/>
+
+The behavior follows an `AppBarLayout` and uses the toolbar height of your theme (`?android:attr/actionBarSize`).
 
 ```xml
 <iammert.com.view.scalinglib.ScalingLayout
@@ -95,7 +105,7 @@ Add the dependency:
 
 ```gradle
 dependencies {
-    implementation 'com.github.iammert:ScalingLayout:2.0.0'
+    implementation 'com.github.iammert:ScalingLayout:2.1.0'
 }
 ```
 
