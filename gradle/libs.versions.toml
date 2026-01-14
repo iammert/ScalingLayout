@@ -1,0 +1,24 @@
+[versions]
+agp = "8.5.0"
+androidx-appcompat = "1.7.0"
+androidx-coordinatorlayout = "1.2.0"
+androidx-core = "1.13.1"
+androidx-test-espresso = "3.6.1"
+androidx-test-junit = "1.2.1"
+junit = "4.13.2"
+material = "1.12.0"
+robolectric = "4.14.1"
+
+[libraries]
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version.ref = "androidx-coordinatorlayout" }
+androidx-core = { module = "androidx.core:core", version.ref = "androidx-core" }
+androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
+junit = { module = "junit:junit", version.ref = "junit" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }

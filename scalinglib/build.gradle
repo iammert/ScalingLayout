@@ -1,5 +1,7 @@
-apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
+plugins {
+    alias(libs.plugins.android.library)
+    id 'maven-publish'
+}
 
 group = 'com.github.iammert'
 version = '2.1.0'
@@ -40,12 +42,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api 'androidx.core:core:1.13.1'
-    api 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
-    api 'com.google.android.material:material:1.12.0'
+    api libs.androidx.core
+    api libs.androidx.coordinatorlayout
+    api libs.material
 
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.robolectric:robolectric:4.14.1'
+    testImplementation libs.junit
+    testImplementation libs.robolectric
 }
 
 afterEvaluate {
