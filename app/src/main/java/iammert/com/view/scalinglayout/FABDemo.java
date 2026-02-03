@@ -21,6 +21,7 @@ public class FABDemo extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SystemBars.apply(this);
         setContentView(R.layout.activity_fab);
 
         final ImageView fabIcon = findViewById(R.id.fabIcon);

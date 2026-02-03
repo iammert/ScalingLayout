@@ -14,6 +14,7 @@ public class CollapsingDemoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SystemBars.apply(this);
         setContentView(R.layout.activity_collapsing);
 
         Toolbar toolbar = findViewById(R.id.toolbar);

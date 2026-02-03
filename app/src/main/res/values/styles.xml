@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!-- Visible behind the transparent system bars. -->
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
     </style>
 
 </resources>
