@@ -41,7 +41,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     api libs.androidx.core
     api libs.androidx.coordinatorlayout
     api libs.material
