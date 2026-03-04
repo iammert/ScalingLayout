@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      androidx:
+        patterns:
+          - "androidx.*"
+      test:
+        patterns:
+          - "junit:*"
+          - "org.robolectric:*"
+          - "androidx.test*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
