@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -102,6 +103,20 @@ public class ScalingLayout extends FrameLayout {
      */
     @Nullable
     private ScalingLayoutOutlineProvider viewOutline;
+
+    /**
+     * Follows the parent size so an expanded layout keeps filling the parent
+     * when it is resized, for example in multi window mode.
+     */
+    private final View.OnLayoutChangeListener parentLayoutChangeListener = new View.OnLayoutChangeListener() {
+        @Override
+        public void onLayoutChange(View view, int left, int top, int right, int bottom,
+                                   int oldLeft, int oldTop, int oldRight, int oldBottom) {
+            if (right - left != oldRight - oldLeft) {
+                onParentWidthChanged();
+            }
+        }
+    };
 
 
     public ScalingLayout(@NonNull Context context) {
@@ -305,9 +320,37 @@ public class ScalingLayout extends FrameLayout {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (getParent() instanceof View) {
+            ((View) getParent()).addOnLayoutChangeListener(parentLayoutChangeListener);
+        }
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
+        if (getParent() instanceof View) {
+            ((View) getParent()).removeOnLayoutChangeListener(parentLayoutChangeListener);
+        }
         valueAnimator.cancel();
         super.onDetachedFromWindow();
+    }
+
+    private void onParentWidthChanged() {
+        int parentWidth = getParentContentWidth();
+        if (parentWidth <= 0 || parentWidth == settings.getMaxWidth()) {
+            return;
+        }
+        settings.setMaxWidth(parentWidth);
+        if (settings.isInitialized() && currentProgress > 0f && !valueAnimator.isRunning()) {
+            // Parent is in the middle of a layout pass, apply on the next frame.
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    applyProgress(currentProgress);
+                }
+            });
+        }
     }
 
     /**

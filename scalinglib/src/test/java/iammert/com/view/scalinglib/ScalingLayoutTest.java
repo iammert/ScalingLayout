@@ -109,6 +109,33 @@ public class ScalingLayoutTest {
     }
 
     @Test
+    public void expanded_followsParentWidthChanges() {
+        layout();
+        scalingLayout.expand();
+        finishAnimation();
+
+        parent.getLayoutParams().width = 250;
+        parent.requestLayout();
+        layout();
+
+        assertEquals(250, parent.getWidth());
+        assertEquals(250, scalingLayout.getWidth());
+        assertEquals(State.EXPANDED, scalingLayout.getState());
+    }
+
+    @Test
+    public void collapsed_keepsInitialWidthWhenParentChanges() {
+        layout();
+
+        parent.getLayoutParams().width = 250;
+        parent.requestLayout();
+        layout();
+
+        assertEquals(INITIAL_WIDTH, scalingLayout.getWidth());
+        assertEquals(State.COLLAPSED, scalingLayout.getState());
+    }
+
+    @Test
     public void margins_shrinkWithProgress() {
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(INITIAL_WIDTH, HEIGHT);
         params.setMargins(20, 10, 40, 30);
