@@ -40,9 +40,17 @@ public class ScalingLayoutSettings {
         if (!isInitialized) {
             isInitialized = true;
             initialWidth = width;
-            float radiusLimit = height / 2f;
-            maxRadius = radiusLimit * radiusFactor;
+            setHeight(height);
         }
+    }
+
+    /**
+     * Recalculates the max radius for the given layout height.
+     *
+     * @param height layout height in pixels
+     */
+    void setHeight(int height) {
+        maxRadius = height / 2f * radiusFactor;
     }
 
     public int getInitialWidth() {

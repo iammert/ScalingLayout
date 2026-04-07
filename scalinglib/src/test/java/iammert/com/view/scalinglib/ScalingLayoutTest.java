@@ -136,6 +136,19 @@ public class ScalingLayoutTest {
     }
 
     @Test
+    public void radius_followsHeightChanges() {
+        layout();
+        assertEquals(HEIGHT / 2f, outlineRadius(), 0.001f);
+
+        scalingLayout.getLayoutParams().height = 60;
+        scalingLayout.requestLayout();
+        layout();
+
+        assertEquals(30f, scalingLayout.getSettings().getMaxRadius(), 0.001f);
+        assertEquals(30f, outlineRadius(), 0.001f);
+    }
+
+    @Test
     public void margins_shrinkWithProgress() {
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(INITIAL_WIDTH, HEIGHT);
         params.setMargins(20, 10, 40, 30);
@@ -270,6 +283,10 @@ public class ScalingLayoutTest {
         @Override
         public void onProgress(float progress) {
         }
+    }
+
+    private float outlineRadius() {
+        return ((ScalingLayoutOutlineProvider) scalingLayout.getOutlineProvider()).getRadius();
     }
 
     /**

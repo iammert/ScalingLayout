@@ -206,6 +206,10 @@ public class ScalingLayout extends FrameLayout {
                 });
             }
             pendingProgress = -1f;
+        } else if (h != oldh) {
+            // Height changed, for example by wrap_content or a new font scale.
+            settings.setHeight(h);
+            currentRadius = ScalingMath.radiusFor(settings.getMaxRadius(), currentProgress);
         }
 
         rectF.set(0, 0, w, h);
