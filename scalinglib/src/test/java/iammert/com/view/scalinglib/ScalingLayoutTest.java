@@ -149,6 +149,17 @@ public class ScalingLayoutTest {
     }
 
     @Test
+    public void detachDuringAnimation_jumpsToTargetState() {
+        layout();
+        scalingLayout.expand();
+
+        parent.removeView(scalingLayout);
+
+        assertEquals(State.EXPANDED, scalingLayout.getState());
+        assertEquals(1f, scalingLayout.getProgress(), 0f);
+    }
+
+    @Test
     public void margins_shrinkWithProgress() {
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(INITIAL_WIDTH, HEIGHT);
         params.setMargins(20, 10, 40, 30);

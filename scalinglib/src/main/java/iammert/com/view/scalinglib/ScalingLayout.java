@@ -336,7 +336,10 @@ public class ScalingLayout extends FrameLayout {
         if (getParent() instanceof View) {
             ((View) getParent()).removeOnLayoutChangeListener(parentLayoutChangeListener);
         }
-        valueAnimator.cancel();
+        if (valueAnimator.isRunning()) {
+            // Jump to the target instead of leaving the layout half expanded.
+            valueAnimator.end();
+        }
         super.onDetachedFromWindow();
     }
 
