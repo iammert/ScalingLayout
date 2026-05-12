@@ -206,6 +206,20 @@ public class ScalingLayoutTest {
     }
 
     @Test
+    public void setProgress_clampsOutOfRangeValues() {
+        layout();
+
+        scalingLayout.setProgress(1.0000001f);
+        assertEquals(State.EXPANDED, scalingLayout.getState());
+
+        scalingLayout.setProgress(-0.5f);
+        assertEquals(State.COLLAPSED, scalingLayout.getState());
+
+        scalingLayout.setProgress(Float.NaN);
+        assertEquals(0f, scalingLayout.getProgress(), 0f);
+    }
+
+    @Test
     public void listeners_areNotifiedOncePerStateChange() {
         RecordingListener first = new RecordingListener();
         RecordingListener second = new RecordingListener();

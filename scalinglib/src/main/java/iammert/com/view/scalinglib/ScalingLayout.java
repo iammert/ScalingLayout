@@ -365,13 +365,15 @@ public class ScalingLayout extends FrameLayout {
      * between 0.0f and 1.0f. And apply this
      * progress value to layout. A running expand/collapse
      * animation is cancelled.
+     * Values outside of the range are clamped, NaN is ignored.
      *
      * @param progress
      */
     public void setProgress(float progress) {
-        if (Float.isNaN(progress) || progress > 1.0f || progress < 0.0f) {
+        if (Float.isNaN(progress)) {
             return;
         }
+        progress = ScalingMath.clampProgress(progress);
         if (!settings.isInitialized()) {
             pendingProgress = progress;
             return;
