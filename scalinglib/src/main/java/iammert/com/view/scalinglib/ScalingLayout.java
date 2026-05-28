@@ -197,15 +197,13 @@ public class ScalingLayout extends FrameLayout {
             setOutlineProvider(viewOutline);
 
             if (pendingProgress >= 0f) {
-                final float restoredProgress = pendingProgress;
                 post(new Runnable() {
                     @Override
                     public void run() {
-                        applyProgress(restoredProgress);
+                        applyPendingProgress();
                     }
                 });
             }
-            pendingProgress = -1f;
         } else if (h != oldh) {
             // Height changed, for example by wrap_content or a new font scale.
             settings.setHeight(h);
@@ -254,12 +252,29 @@ public class ScalingLayout extends FrameLayout {
     }
 
     /**
-     * get current state of layout
+     * get current state of layout. Before the first layout this is the
+     * state the layout will have once it is measured.
      *
      * @return
      */
     public State getState() {
+        if (pendingProgress >= 0f) {
+            return ScalingMath.stateFor(pendingProgress);
+        }
         return state;
+    }
+
+    /**
+     * Applies progress requested before the first layout, unless it has
+     * been replaced by a later expand/collapse/setProgress call.
+     */
+    private void applyPendingProgress() {
+        if (pendingProgress < 0f) {
+            return;
+        }
+        float progress = pendingProgress;
+        pendingProgress = -1f;
+        applyProgress(progress);
     }
 
     /**
@@ -289,6 +304,7 @@ public class ScalingLayout extends FrameLayout {
             pendingProgress = targetProgress;
             return;
         }
+        pendingProgress = -1f;
         if (valueAnimator.isRunning()) {
             valueAnimator.cancel();
         }
@@ -304,7 +320,7 @@ public class ScalingLayout extends FrameLayout {
     protected Parcelable onSaveInstanceState() {
         SavedState savedState = new SavedState(super.onSaveInstanceState());
         // If an animation is running, save where it is heading to.
-        savedState.progress = valueAnimator.isRunning() ? animationTargetProgress : currentProgress;
+        savedState.progress = valueAnimator.isRunning() ? animationTargetProgress : getProgress();
         return savedState;
     }
 
@@ -317,6 +333,8 @@ public class ScalingLayout extends FrameLayout {
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
         if (settings.isInitialized()) {
+            pendingProgress = -1f;
+            valueAnimator.cancel();
             applyProgress(savedState.progress);
         } else {
             pendingProgress = savedState.progress;
@@ -378,16 +396,21 @@ public class ScalingLayout extends FrameLayout {
             pendingProgress = progress;
             return;
         }
+        pendingProgress = -1f;
         valueAnimator.cancel();
         applyProgress(progress);
     }
 
     /**
-     * Current progress of the layout.
+     * Current progress of the layout. Before the first layout this is the
+     * progress the layout will have once it is measured.
      *
      * @return value between 0.0f (collapsed) and 1.0f (expanded)
      */
     public float getProgress() {
+        if (pendingProgress >= 0f) {
+            return pendingProgress;
+        }
         return currentProgress;
     }
 

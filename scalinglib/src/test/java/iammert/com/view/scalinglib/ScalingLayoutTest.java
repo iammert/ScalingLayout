@@ -64,6 +64,28 @@ public class ScalingLayoutTest {
     }
 
     @Test
+    public void expand_beforeFirstLayout_isReportedImmediately() {
+        scalingLayout.expand();
+
+        assertEquals(State.EXPANDED, scalingLayout.getState());
+        assertEquals(1f, scalingLayout.getProgress(), 0f);
+    }
+
+    @Test
+    public void expand_afterPendingProgress_winsOverPendingValue() {
+        scalingLayout.setProgress(0.5f);
+        parent.measure(View.MeasureSpec.makeMeasureSpec(400, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(400, View.MeasureSpec.EXACTLY));
+        parent.layout(0, 0, 400, 400);
+
+        // Layout is initialized but the pending progress is not applied yet.
+        scalingLayout.collapse();
+        finishAnimation();
+
+        assertEquals(State.COLLAPSED, scalingLayout.getState());
+    }
+
+    @Test
     public void setProgress_beforeFirstLayout_isAppliedAfterLayout() {
         scalingLayout.setProgress(0.5f);
 
