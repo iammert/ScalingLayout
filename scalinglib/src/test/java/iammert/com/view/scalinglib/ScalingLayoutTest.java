@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Looper;
+import android.os.Parcel;
 import android.view.View;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
@@ -239,6 +240,32 @@ public class ScalingLayoutTest {
 
         scalingLayout.setProgress(Float.NaN);
         assertEquals(0f, scalingLayout.getProgress(), 0f);
+    }
+
+    @Test
+    public void savedState_survivesParcelRoundTrip() {
+        layout();
+        scalingLayout.setProgress(0.4f);
+
+        Parcel parcel = Parcel.obtain();
+        scalingLayout.onSaveInstanceState().writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        ScalingLayout.SavedState restored = ScalingLayout.SavedState.CREATOR.createFromParcel(parcel);
+        parcel.recycle();
+
+        ScalingLayout newLayout = new ScalingLayout(context);
+        newLayout.onRestoreInstanceState(restored);
+        assertEquals(0.4f, newLayout.getProgress(), 0.001f);
+    }
+
+    @Test
+    public void savedState_storesTargetOfRunningAnimation() {
+        layout();
+        scalingLayout.expand();
+
+        ScalingLayout.SavedState state = (ScalingLayout.SavedState) scalingLayout.onSaveInstanceState();
+
+        assertEquals(1f, state.progress, 0f);
     }
 
     @Test
