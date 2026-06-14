@@ -105,7 +105,7 @@ Add the dependency:
 
 ```gradle
 dependencies {
-    implementation 'com.github.iammert:ScalingLayout:2.1.0'
+    implementation 'com.github.iammert:ScalingLayout:2.1.1'
 }
 ```
 

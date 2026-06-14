@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.1.1
+
+### Fixed
+- An expanded layout kept its old width when the parent was resized.
+- The corner radius was not updated when the layout height changed.
+- Detaching the layout during an animation left it half expanded.
+- `setProgress()` ignored values slightly outside of 0 to 1. They are now clamped.
+- `getState()` and `getProgress()` returned collapsed values after `expand()` was called before the first layout.
+- `expand()`, `collapse()` or `setProgress()` called right after the first layout was overwritten by a pending value.
+
+### Build
+- Android Gradle Plugin 8.13, Gradle 8.14, compileSdk/targetSdk 36.
+- Updated AndroidX Core to 1.17.0, CoordinatorLayout to 1.3.0 and Material Components to 1.13.0.
+- Dependencies are managed in a version catalog.
+- More tests for `ScalingLayoutBehavior` and saved state.
+
 ## 2.1.0
 
 ### Added
