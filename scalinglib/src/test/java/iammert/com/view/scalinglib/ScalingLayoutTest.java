@@ -286,6 +286,24 @@ public class ScalingLayoutTest {
     }
 
     @Test
+    public void listener_canOverrideOnlyOneCallback() {
+        final int[] expanded = new int[1];
+        scalingLayout.addListener(new ScalingLayoutListener() {
+            @Override
+            public void onExpanded() {
+                expanded[0]++;
+            }
+        });
+        layout();
+
+        scalingLayout.setProgress(0.5f);
+        scalingLayout.setProgress(1f);
+        scalingLayout.setProgress(0f);
+
+        assertEquals(1, expanded[0]);
+    }
+
+    @Test
     public void removedListener_isNotNotified() {
         RecordingListener listener = new RecordingListener();
         scalingLayout.addListener(listener);

@@ -46,10 +46,6 @@ public class SearchBarDemoActivity extends AppCompatActivity {
                         .withEndAction(() -> textViewSearch.setVisibility(View.INVISIBLE))
                         .start();
             }
-
-            @Override
-            public void onProgress(float progress) {
-            }
         });
 
         scalingLayout.setOnClickListener(view -> {

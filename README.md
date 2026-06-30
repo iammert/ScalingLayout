@@ -50,6 +50,7 @@ ScalingLayout exposes expand and collapse actions to TalkBack and announces whet
 
 ## Listener
 Use `addListener`/`removeListener` to register multiple listeners. `setListener` replaces all registered listeners.
+All callbacks have empty default implementations, so you only override the ones you need.
 
 ```java
 scalingLayout.addListener(new ScalingLayoutListener() {
