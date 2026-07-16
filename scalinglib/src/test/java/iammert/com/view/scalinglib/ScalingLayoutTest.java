@@ -111,6 +111,41 @@ public class ScalingLayoutTest {
     }
 
     @Test
+    public void toggle_switchesBetweenStates() {
+        layout();
+
+        scalingLayout.toggle();
+        finishAnimation();
+        assertTrue(scalingLayout.isExpanded());
+
+        scalingLayout.toggle();
+        finishAnimation();
+        assertFalse(scalingLayout.isExpanded());
+        assertEquals(State.COLLAPSED, scalingLayout.getState());
+    }
+
+    @Test
+    public void toggle_reversesRunningExpandAnimation() {
+        layout();
+
+        scalingLayout.expand();
+        scalingLayout.toggle();
+        finishAnimation();
+
+        assertEquals(State.COLLAPSED, scalingLayout.getState());
+    }
+
+    @Test
+    public void toggle_beforeFirstLayout_expandsAfterLayout() {
+        scalingLayout.toggle();
+        assertTrue(scalingLayout.isExpanded());
+
+        layout();
+
+        assertEquals(State.EXPANDED, scalingLayout.getState());
+    }
+
+    @Test
     public void expand_fillsParentWidth() {
         layout();
 

@@ -294,6 +294,25 @@ public class ScalingLayout extends FrameLayout {
     }
 
     /**
+     * Collapses the layout if it is expanded or expanding, expands it otherwise.
+     */
+    public void toggle() {
+        float target = valueAnimator.isRunning() ? animationTargetProgress : getProgress();
+        if (target >= 1f) {
+            collapse();
+        } else {
+            expand();
+        }
+    }
+
+    /**
+     * @return true if the layout is fully expanded
+     */
+    public boolean isExpanded() {
+        return getState() == State.EXPANDED;
+    }
+
+    /**
      * Animates from the current progress to the target progress so that
      * calling expand/collapse in the middle of an animation does not jump.
      *
