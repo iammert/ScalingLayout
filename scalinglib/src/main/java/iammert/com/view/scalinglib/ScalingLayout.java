@@ -282,7 +282,20 @@ public class ScalingLayout extends FrameLayout {
      * If the layout is not measured yet, it is expanded right after the first layout.
      */
     public void expand() {
-        animateProgressTo(1f);
+        expand(true);
+    }
+
+    /**
+     * Expand layout to screen.
+     *
+     * @param animate false to jump to the expanded state without animation
+     */
+    public void expand(boolean animate) {
+        if (animate) {
+            animateProgressTo(1f);
+        } else {
+            setProgress(1f);
+        }
     }
 
     /**
@@ -290,7 +303,20 @@ public class ScalingLayout extends FrameLayout {
      * If the layout is not measured yet, it stays collapsed after the first layout.
      */
     public void collapse() {
-        animateProgressTo(0f);
+        collapse(true);
+    }
+
+    /**
+     * Collapse layout to initial position.
+     *
+     * @param animate false to jump to the collapsed state without animation
+     */
+    public void collapse(boolean animate) {
+        if (animate) {
+            animateProgressTo(0f);
+        } else {
+            setProgress(0f);
+        }
     }
 
     /**

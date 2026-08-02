@@ -111,6 +111,33 @@ public class ScalingLayoutTest {
     }
 
     @Test
+    public void expandAndCollapse_withoutAnimation_applyImmediately() {
+        RecordingListener listener = new RecordingListener();
+        scalingLayout.addListener(listener);
+        layout();
+
+        scalingLayout.expand(false);
+        assertEquals(State.EXPANDED, scalingLayout.getState());
+        assertEquals(1, listener.expanded);
+
+        scalingLayout.collapse(false);
+        assertEquals(State.COLLAPSED, scalingLayout.getState());
+        assertEquals(1, listener.collapsed);
+    }
+
+    @Test
+    public void expandWithoutAnimation_cancelsRunningCollapse() {
+        layout();
+        scalingLayout.expand(false);
+
+        scalingLayout.collapse();
+        scalingLayout.expand(false);
+        finishAnimation();
+
+        assertEquals(State.EXPANDED, scalingLayout.getState());
+    }
+
+    @Test
     public void toggle_switchesBetweenStates() {
         layout();
 

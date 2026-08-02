@@ -33,6 +33,7 @@ Motivated by layout in [Blinkist](https://play.google.com/store/apps/details?id=
 ```java
 scalingLayout.expand(); // expands the layout to full width
 scalingLayout.collapse(); // collapses the layout to its initial state
+scalingLayout.expand(false); // expands without animation, same for collapse(false)
 scalingLayout.toggle(); // collapses if expanded or expanding, expands otherwise
 scalingLayout.isExpanded(); // true if fully expanded
 scalingLayout.setProgress(float progress); // 1 is fully expanded, 0 is initial state
