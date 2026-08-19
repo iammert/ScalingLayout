@@ -183,6 +183,29 @@ public class ScalingLayoutTest {
     }
 
     @Test
+    public void expand_isLimitedByMaxExpandedWidth() {
+        scalingLayout.setMaxExpandedWidth(INITIAL_WIDTH + 10);
+        layout();
+
+        scalingLayout.expand();
+        finishAnimation();
+
+        assertEquals(INITIAL_WIDTH + 10, scalingLayout.getWidth());
+    }
+
+    @Test
+    public void setMaxExpandedWidth_updatesExpandedLayout() {
+        layout();
+        scalingLayout.expand(false);
+        layout();
+
+        scalingLayout.setMaxExpandedWidth(INITIAL_WIDTH + 10);
+        layout();
+
+        assertEquals(INITIAL_WIDTH + 10, scalingLayout.getWidth());
+    }
+
+    @Test
     public void expand_respectsParentPadding() {
         parent.setPadding(40, 0, 40, 0);
         layout();

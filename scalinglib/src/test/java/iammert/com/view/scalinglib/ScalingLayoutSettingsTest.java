@@ -37,6 +37,30 @@ public class ScalingLayoutSettingsTest {
         assertEquals(0f, settings.getMaxRadius(), 0.001f);
     }
 
+    @Test
+    public void maxExpandedWidth_limitsExpandedWidth() {
+        AttributeSet attrs = Robolectric.buildAttributeSet()
+                .addAttribute(R.attr.maxExpandedWidth, "200px")
+                .build();
+        ScalingLayoutSettings settings = new ScalingLayoutSettings(context, attrs);
+        settings.initialize(100, 50);
+        settings.setMaxWidth(500);
+
+        assertEquals(200, settings.getMaxExpandedWidth());
+        assertEquals(200, settings.getMaxWidth());
+        assertEquals(500, settings.getAvailableWidth());
+    }
+
+    @Test
+    public void maxExpandedWidth_isNeverSmallerThanInitialWidth() {
+        ScalingLayoutSettings settings = new ScalingLayoutSettings(context, null);
+        settings.setMaxExpandedWidth(80);
+        settings.initialize(100, 50);
+        settings.setMaxWidth(500);
+
+        assertEquals(100, settings.getMaxWidth());
+    }
+
     private ScalingLayoutSettings settingsWithRadiusFactor(String value) {
         AttributeSet attrs = Robolectric.buildAttributeSet()
                 .addAttribute(R.attr.radiusFactor, value)

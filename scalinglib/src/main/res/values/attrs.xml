@@ -4,6 +4,7 @@
     <declare-styleable name="ScalingLayout">
         <attr name="radiusFactor" format="float"/>
         <attr name="animationDuration" format="integer"/>
+        <attr name="maxExpandedWidth" format="dimension"/>
     </declare-styleable>
 
 </resources>

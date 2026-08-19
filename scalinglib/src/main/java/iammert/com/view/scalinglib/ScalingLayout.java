@@ -408,7 +408,7 @@ public class ScalingLayout extends FrameLayout {
 
     private void onParentWidthChanged() {
         int parentWidth = getParentContentWidth();
-        if (parentWidth <= 0 || parentWidth == settings.getMaxWidth()) {
+        if (parentWidth <= 0 || parentWidth == settings.getAvailableWidth()) {
             return;
         }
         settings.setMaxWidth(parentWidth);
@@ -468,6 +468,19 @@ public class ScalingLayout extends FrameLayout {
     public void setAnimationDuration(long durationMillis) {
         settings.setAnimationDuration(durationMillis);
         valueAnimator.setDuration(settings.getAnimationDuration());
+    }
+
+    /**
+     * Limits the width the layout expands to, which is useful on tablets.
+     * Can also be set from XML with app:maxExpandedWidth.
+     *
+     * @param maxExpandedWidthPx width in pixels, or 0 to fill the parent
+     */
+    public void setMaxExpandedWidth(int maxExpandedWidthPx) {
+        settings.setMaxExpandedWidth(maxExpandedWidthPx);
+        if (settings.isInitialized() && !valueAnimator.isRunning()) {
+            applyProgress(currentProgress);
+        }
     }
 
     /**

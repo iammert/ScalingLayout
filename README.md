@@ -73,6 +73,7 @@ scalingLayout.addListener(new ScalingLayoutListener() {
 |---|---|---|---|
 | `app:radiusFactor` | float | `1` | Between 0 and 1. 1 = fully rounded corners, 0 = no rounded corners. |
 | `app:animationDuration` | integer | `200` | Expand/collapse animation duration in milliseconds. |
+| `app:maxExpandedWidth` | dimension | none | Limits the expanded width, for example on tablets. Also `setMaxExpandedWidth(int)`. |
 
 ## ScalingLayoutBehavior
 <img src="https://raw.githubusercontent.com/iammert/ScalingLayout/master/art/gif_behavior.gif"/>

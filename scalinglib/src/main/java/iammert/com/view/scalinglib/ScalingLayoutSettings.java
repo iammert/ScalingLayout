@@ -19,6 +19,7 @@ public class ScalingLayoutSettings {
     private long animationDuration;
     private int initialWidth;
     private int maxWidth;
+    private int maxExpandedWidth;
     private float maxRadius;
     private float elevation;
     private boolean isInitialized = false;
@@ -28,6 +29,7 @@ public class ScalingLayoutSettings {
         radiusFactor = typedArray.getFloat(R.styleable.ScalingLayout_radiusFactor, DEFAULT_RADIUS_FACTOR);
         animationDuration = Math.max(0, typedArray.getInt(R.styleable.ScalingLayout_animationDuration, DEFAULT_ANIMATION_DURATION));
         maxWidth = context.getResources().getDisplayMetrics().widthPixels;
+        maxExpandedWidth = Math.max(0, typedArray.getDimensionPixelSize(R.styleable.ScalingLayout_maxExpandedWidth, 0));
         typedArray.recycle();
 
         if (Float.isNaN(radiusFactor)) {
@@ -57,12 +59,40 @@ public class ScalingLayoutSettings {
         return initialWidth;
     }
 
+    /**
+     * Width the layout expands to. This is the available width, limited by
+     * {@code app:maxExpandedWidth} when it is set. It is never smaller than
+     * the initial width.
+     *
+     * @return expanded width in pixels
+     */
     public int getMaxWidth() {
+        if (maxExpandedWidth > 0) {
+            return Math.min(maxWidth, Math.max(maxExpandedWidth, initialWidth));
+        }
         return maxWidth;
     }
 
     /**
-     * Updates the width the layout expands to. Non positive values are ignored.
+     * @return width available inside the parent, ignoring {@code app:maxExpandedWidth}
+     */
+    int getAvailableWidth() {
+        return maxWidth;
+    }
+
+    /**
+     * @return max expanded width in pixels, or 0 if there is no limit
+     */
+    public int getMaxExpandedWidth() {
+        return maxExpandedWidth;
+    }
+
+    void setMaxExpandedWidth(int maxExpandedWidth) {
+        this.maxExpandedWidth = Math.max(0, maxExpandedWidth);
+    }
+
+    /**
+     * Updates the width available for the layout to expand to. Non positive values are ignored.
      *
      * @param maxWidth
      */
