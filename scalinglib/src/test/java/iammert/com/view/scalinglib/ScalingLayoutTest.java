@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.time.Duration;
 
@@ -424,6 +425,16 @@ public class ScalingLayoutTest {
         assertTrue(info.getActionList().contains(AccessibilityNodeInfo.AccessibilityAction.ACTION_EXPAND));
         assertFalse(info.getActionList().contains(AccessibilityNodeInfo.AccessibilityAction.ACTION_COLLAPSE));
         assertEquals("Collapsed", String.valueOf(ViewCompat.getStateDescription(scalingLayout)));
+    }
+
+    @Test
+    @Config(qualifiers = "tr")
+    public void accessibility_stateDescriptionIsLocalized() {
+        layout();
+        assertEquals("Daraltıldı", String.valueOf(ViewCompat.getStateDescription(scalingLayout)));
+
+        scalingLayout.expand(false);
+        assertEquals("Genişletildi", String.valueOf(ViewCompat.getStateDescription(scalingLayout)));
     }
 
     @Test
