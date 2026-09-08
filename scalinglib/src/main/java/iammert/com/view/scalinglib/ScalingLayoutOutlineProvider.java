@@ -21,7 +21,9 @@ public class ScalingLayoutOutlineProvider extends ViewOutlineProvider {
 
     @Override
     public void getOutline(View view, Outline outline) {
-        outline.setRoundRect(0, 0, width, height, radius);
+        // A radius larger than half of the shorter side cannot be clipped on every API level.
+        float maxRadius = Math.min(width, height) / 2f;
+        outline.setRoundRect(0, 0, width, height, Math.min(radius, maxRadius));
     }
 
     public int getWidth() {

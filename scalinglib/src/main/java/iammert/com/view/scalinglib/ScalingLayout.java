@@ -3,12 +3,6 @@ package iammert.com.view.scalinglib;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -69,13 +63,6 @@ public class ScalingLayout extends FrameLayout {
     private State state;
 
     /**
-     * Values to draw rounded on layout
-     */
-    private Path path;
-    private RectF rectF;
-    private Paint maskPaint;
-
-    /**
      * Animator to expand and collapse
      */
     private ValueAnimator valueAnimator;
@@ -99,7 +86,7 @@ public class ScalingLayout extends FrameLayout {
     private float animationTargetProgress;
 
     /**
-     * CustomOutline for elevation shadows
+     * Outline used for elevation shadows and to clip the rounded corners.
      */
     @Nullable
     private ScalingLayoutOutlineProvider viewOutline;
@@ -150,13 +137,10 @@ public class ScalingLayout extends FrameLayout {
         state = State.COLLAPSED;
         updateStateDescription();
 
-        path = new Path();
-        rectF = new RectF(0, 0, 0, 0);
-
-        maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        maskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-
-        setLayerType(LAYER_TYPE_HARDWARE, null);
+        // Clipping to the outline rounds the corners of the background,
+        // the children and the foreground (e.g. ripples) without an
+        // offscreen layer.
+        setClipToOutline(true);
 
         valueAnimator = ValueAnimator.ofFloat(0, 0);
         valueAnimator.setDuration(settings.getAnimationDuration());
@@ -210,9 +194,7 @@ public class ScalingLayout extends FrameLayout {
             currentRadius = ScalingMath.radiusFor(settings.getMaxRadius(), currentProgress);
         }
 
-        rectF.set(0, 0, w, h);
-        updateViewOutline(h, currentWidth, currentRadius);
-        invalidate();
+        updateViewOutline(h, w, currentRadius);
     }
 
     /**
@@ -229,17 +211,6 @@ public class ScalingLayout extends FrameLayout {
         }
         ViewGroup parentGroup = (ViewGroup) parent;
         return parentGroup.getWidth() - parentGroup.getPaddingLeft() - parentGroup.getPaddingRight();
-    }
-
-    @Override
-    protected void dispatchDraw(Canvas canvas) {
-        int save = canvas.save();
-        super.dispatchDraw(canvas);
-        canvas.restoreToCount(save);
-
-        path.reset();
-        path.addRoundRect(rectF, currentRadius, currentRadius, Path.Direction.CCW);
-        canvas.drawPath(path, maskPaint);
     }
 
     /**
@@ -558,7 +529,8 @@ public class ScalingLayout extends FrameLayout {
             currentMargins[i] = ScalingMath.marginFor(maxMargins[i], currentProgress);
         }
         updateState();
-        updateViewOutline(getHeight(), currentWidth, currentRadius);
+        // Width is updated in onSizeChanged once the new width is laid out.
+        updateViewOutline(getHeight(), getWidth(), currentRadius);
 
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
         layoutParams.width = currentWidth;
@@ -579,7 +551,6 @@ public class ScalingLayout extends FrameLayout {
             marginLayoutParams.setMarginEnd(end);
         }
         requestLayout();
-        invalidate();
     }
 
     /**

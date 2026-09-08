@@ -8,6 +8,7 @@ import static org.robolectric.Shadows.shadowOf;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Outline;
 import android.os.Looper;
 import android.os.Parcel;
 import android.view.View;
@@ -266,6 +267,31 @@ public class ScalingLayoutTest {
 
         assertEquals(State.EXPANDED, scalingLayout.getState());
         assertEquals(1f, scalingLayout.getProgress(), 0f);
+    }
+
+    @Test
+    public void corners_areClippedByOutlineWithoutOffscreenLayer() {
+        layout();
+
+        assertTrue(scalingLayout.getClipToOutline());
+        assertEquals(View.LAYER_TYPE_NONE, scalingLayout.getLayerType());
+
+        Outline outline = new Outline();
+        scalingLayout.getOutlineProvider().getOutline(scalingLayout, outline);
+        assertTrue(outline.canClip());
+        assertEquals(HEIGHT / 2f, outline.getRadius(), 0.001f);
+    }
+
+    @Test
+    public void outline_matchesLaidOutWidth() {
+        layout();
+
+        scalingLayout.expand(false);
+        layout();
+
+        ScalingLayoutOutlineProvider provider = (ScalingLayoutOutlineProvider) scalingLayout.getOutlineProvider();
+        assertEquals(scalingLayout.getWidth(), provider.getWidth());
+        assertEquals(0f, provider.getRadius(), 0f);
     }
 
     @Test
