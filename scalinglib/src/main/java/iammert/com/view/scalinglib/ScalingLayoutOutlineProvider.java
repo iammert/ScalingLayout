@@ -5,6 +5,9 @@ import android.view.View;
 import android.view.ViewOutlineProvider;
 
 /**
+ * Rounded rectangle outline of a {@link ScalingLayout}. It draws the elevation
+ * shadow and clips the rounded corners.
+ * <p>
  * Created by mertsimsek on 08/01/2018.
  */
 public class ScalingLayoutOutlineProvider extends ViewOutlineProvider {

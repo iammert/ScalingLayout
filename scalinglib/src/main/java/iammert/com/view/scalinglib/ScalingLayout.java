@@ -21,6 +21,12 @@ import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 
 /**
+ * A {@link FrameLayout} with rounded corners that expands to the width of its
+ * parent. Expanding removes the corner radius and the margins, collapsing
+ * restores them. Use {@link #expand()}, {@link #collapse()} or
+ * {@link #setProgress(float)} to change its state, or attach
+ * {@link ScalingLayoutBehavior} to follow an {@code AppBarLayout}.
+ * <p>
  * Created by mertsimsek on 30/09/2017.
  */
 
@@ -129,8 +135,8 @@ public class ScalingLayout extends FrameLayout {
     /**
      * Initialize layout. Called only from constructors.
      *
-     * @param context
-     * @param attributeSet
+     * @param context      context of the layout
+     * @param attributeSet XML attributes, or null
      */
     private void setup(Context context, @Nullable AttributeSet attributeSet) {
         settings = new ScalingLayoutSettings(context, attributeSet);
@@ -216,7 +222,7 @@ public class ScalingLayout extends FrameLayout {
     /**
      * Provides current {@link ScalingLayoutSettings}
      *
-     * @return
+     * @return settings read from XML attributes and the first layout
      */
     public ScalingLayoutSettings getSettings() {
         return settings;
@@ -226,7 +232,7 @@ public class ScalingLayout extends FrameLayout {
      * get current state of layout. Before the first layout this is the
      * state the layout will have once it is measured.
      *
-     * @return
+     * @return current state
      */
     public State getState() {
         if (pendingProgress >= 0f) {
@@ -313,7 +319,7 @@ public class ScalingLayout extends FrameLayout {
      * Animates from the current progress to the target progress so that
      * calling expand/collapse in the middle of an animation does not jump.
      *
-     * @param targetProgress
+     * @param targetProgress progress to animate to, 0 or 1
      */
     private void animateProgressTo(float targetProgress) {
         if (!settings.isInitialized()) {
@@ -401,7 +407,7 @@ public class ScalingLayout extends FrameLayout {
      * animation is cancelled.
      * Values outside of the range are clamped, NaN is ignored.
      *
-     * @param progress
+     * @param progress 0.0f for collapsed, 1.0f for expanded
      */
     public void setProgress(float progress) {
         if (Float.isNaN(progress)) {
@@ -434,7 +440,7 @@ public class ScalingLayout extends FrameLayout {
      * Sets expand/collapse animation duration in milliseconds.
      * Can also be set from XML with app:animationDuration.
      *
-     * @param durationMillis
+     * @param durationMillis duration in milliseconds, negative values are treated as 0
      */
     public void setAnimationDuration(long durationMillis) {
         settings.setAnimationDuration(durationMillis);
@@ -457,7 +463,7 @@ public class ScalingLayout extends FrameLayout {
     /**
      * Sets interpolator used by expand/collapse animation.
      *
-     * @param interpolator
+     * @param interpolator interpolator to use, or null for the default one
      */
     public void setInterpolator(@Nullable TimeInterpolator interpolator) {
         valueAnimator.setInterpolator(interpolator);
@@ -477,8 +483,9 @@ public class ScalingLayout extends FrameLayout {
 
     /**
      * Registers a listener in addition to the ones already registered.
+     * Adding the same listener twice has no effect.
      *
-     * @param scalingLayoutListener
+     * @param scalingLayoutListener listener to add
      */
     public void addListener(@NonNull ScalingLayoutListener scalingLayoutListener) {
         if (!listeners.contains(scalingLayoutListener)) {
@@ -489,7 +496,7 @@ public class ScalingLayout extends FrameLayout {
     /**
      * Removes a previously registered listener.
      *
-     * @param scalingLayoutListener
+     * @param scalingLayoutListener listener to remove
      */
     public void removeListener(@NonNull ScalingLayoutListener scalingLayoutListener) {
         listeners.remove(scalingLayoutListener);
@@ -498,9 +505,9 @@ public class ScalingLayout extends FrameLayout {
     /**
      * Updates view outline borders and radius
      *
-     * @param height
-     * @param width
-     * @param radius
+     * @param height layout height in pixels
+     * @param width  layout width in pixels
+     * @param radius corner radius in pixels
      */
     private void updateViewOutline(int height, int width, float radius) {
         if (viewOutline != null) {
@@ -515,7 +522,7 @@ public class ScalingLayout extends FrameLayout {
      * Applies given progress to the layout. Radius, width and
      * margins of the layout are calculated from progress.
      *
-     * @param progress
+     * @param progress progress between 0.0f and 1.0f
      */
     private void applyProgress(float progress) {
         if (Float.isNaN(progress) || !settings.isInitialized()) {

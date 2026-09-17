@@ -36,6 +36,7 @@ android {
     publishing {
         singleVariant('release') {
             withSourcesJar()
+            withJavadocJar()
         }
     }
 }
@@ -67,6 +68,17 @@ afterEvaluate {
                             name = 'The Apache License, Version 2.0'
                             url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
                         }
+                    }
+                    developers {
+                        developer {
+                            id = 'iammert'
+                            name = 'Mert Şimşek'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:https://github.com/iammert/ScalingLayout.git'
+                        developerConnection = 'scm:git:ssh://git@github.com/iammert/ScalingLayout.git'
+                        url = 'https://github.com/iammert/ScalingLayout'
                     }
                 }
             }

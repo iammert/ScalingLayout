@@ -5,6 +5,9 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 /**
+ * Values read from the {@code ScalingLayout} XML attributes and calculated on
+ * the first layout.
+ * <p>
  * Created by mertsimsek on 30/09/2017.
  */
 
@@ -94,7 +97,7 @@ public class ScalingLayoutSettings {
     /**
      * Updates the width available for the layout to expand to. Non positive values are ignored.
      *
-     * @param maxWidth
+     * @param maxWidth width in pixels
      */
     void setMaxWidth(int maxWidth) {
         if (maxWidth > 0) {

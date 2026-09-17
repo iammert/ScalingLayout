@@ -11,6 +11,10 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.appbar.AppBarLayout;
 
 /**
+ * Expands a {@link ScalingLayout} while an {@link AppBarLayout} is scrolled
+ * away, and keeps it below the toolbar once the app bar is collapsed.
+ * Set it with {@code app:layout_behavior="iammert.com.view.scalinglib.ScalingLayoutBehavior"}.
+ * <p>
  * Created by mertsimsek on 30/09/2017.
  */
 
