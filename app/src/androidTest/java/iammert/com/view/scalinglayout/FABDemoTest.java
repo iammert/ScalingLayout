@@ -1,10 +1,12 @@
 package iammert.com.view.scalinglayout;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import android.os.SystemClock;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Test;
@@ -40,6 +42,19 @@ public class FABDemoTest {
             scenario.recreate();
 
             assertEquals(State.EXPANDED, waitForState(scenario, State.EXPANDED));
+        }
+    }
+
+    @Test
+    public void back_collapsesExpandedLayoutInsteadOfClosing() {
+        try (ActivityScenario<FABDemo> scenario = ActivityScenario.launch(FABDemo.class)) {
+            scenario.onActivity(activity -> activity.<ScalingLayout>findViewById(R.id.scalingLayout).expand());
+            waitForState(scenario, State.EXPANDED);
+
+            Espresso.pressBack();
+
+            assertEquals(State.COLLAPSED, waitForState(scenario, State.COLLAPSED));
+            scenario.onActivity(activity -> assertFalse(activity.isFinishing()));
         }
     }
 

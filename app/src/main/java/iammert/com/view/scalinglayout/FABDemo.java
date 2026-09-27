@@ -65,5 +65,7 @@ public class FABDemo extends AppCompatActivity {
                 scalingLayout.collapse();
             }
         });
+
+        CollapseOnBack.attach(this, scalingLayout);
     }
 }

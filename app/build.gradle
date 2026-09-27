@@ -19,6 +19,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     buildTypes {
         release {
             // Shrink the sample so the library's consumer rules are exercised.
@@ -35,6 +41,7 @@ dependencies {
     implementation libs.material
 
     testImplementation libs.junit
+    testImplementation libs.robolectric
     androidTestImplementation libs.androidx.test.ext.junit
     androidTestImplementation libs.androidx.test.espresso.core
 }
