@@ -9,7 +9,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:popupTheme="@style/ThemeOverlay.Material3.Light"
                 app:title="@string/movie_title"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -58,7 +58,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
+                android:textColor="@color/textOnDark"
                 android:text="@string/movie_title"
                 android:textSize="22sp"
                 android:textStyle="bold"/>
@@ -66,7 +66,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
+                android:textColor="@color/textOnDark"
                 android:layout_marginTop="24dp"
                 android:text="@string/lorem_ipsum"
                 android:textSize="17sp"/>
@@ -119,7 +119,7 @@
                     android:gravity="center"
                     android:text="@string/watch_now"
                     android:layout_marginStart="8dp"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/textOnDark"
                     android:singleLine="true"
                     android:textSize="18sp" />
 
@@ -148,7 +148,7 @@
                     android:singleLine="true"
                     android:layout_marginStart="8dp"
                     android:text="@string/remind_later"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/textOnDark"
                     android:textSize="18sp" />
 
             </RelativeLayout>

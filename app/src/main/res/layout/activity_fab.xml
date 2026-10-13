@@ -4,7 +4,7 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@color/fabDemoBackground"
     android:orientation="vertical">
 
     <iammert.com.view.scalinglib.ScalingLayout
@@ -64,7 +64,7 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="@string/sort_by_date"
-                        android:textColor="#ffffff"
+                        android:textColor="@color/textOnDark"
                         android:textSize="18sp" />
 
                 </RelativeLayout>
@@ -92,7 +92,7 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="@string/sort_by_rate"
-                        android:textColor="#ffffff"
+                        android:textColor="@color/textOnDark"
                         android:textSize="18sp" />
 
                 </RelativeLayout>

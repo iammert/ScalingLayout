@@ -4,7 +4,12 @@
     <color name="colorPrimaryDark">#06151b</color>
     <color name="colorAccent">#00D474</color>
 
-
     <color name="colorGrayLight">#444444</color>
     <color name="colorGrayDark">#121212</color>
+
+    <!-- Text on the dark and accent surfaces of the demos. -->
+    <color name="textOnDark">#FFFFFF</color>
+    <color name="textHintOnDark">#80FFFFFF</color>
+
+    <color name="fabDemoBackground">#FFFFFF</color>
 </resources>

@@ -52,8 +52,8 @@
                     android:hint="@string/search"
                     android:importantForAutofill="no"
                     android:inputType="text"
-                    android:textColor="#ffffff"
-                    android:textColorHint="#80ffffff"/>
+                    android:textColor="@color/textOnDark"
+                    android:textColorHint="@color/textHintOnDark"/>
 
             </RelativeLayout>
 
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/search"
-                android:textColor="#ffffff"
+                android:textColor="@color/textOnDark"
                 android:textStyle="bold" />
 
 
