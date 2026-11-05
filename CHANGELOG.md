@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.2.0
+
+### Added
+- `toggle()` and `isExpanded()`.
+- `expand(boolean)` and `collapse(boolean)` to change the state without animation.
+- `app:maxExpandedWidth` attribute and `setMaxExpandedWidth(int)` to limit the expanded width.
+- All `ScalingLayoutListener` methods have empty default implementations.
+- Turkish translations for the accessibility state descriptions.
+- The library is published with a javadoc jar.
+
+### Changed
+- Rounded corners are clipped with the view outline instead of a PorterDuff mask. The layout no longer
+  forces a hardware layer, and foreground ripples are clipped to the rounded corners.
+
+### Sample app
+- Material 3 DayNight theme.
+- Back collapses an expanded layout, the up arrow in the collapsing demo works and the search demo
+  shows the keyboard when it expands.
+
+### Build
+- Instrumented tests run on an emulator in CI.
+
 ## 2.1.1
 
 ### Fixed
