@@ -1,8 +1,8 @@
 [versions]
 agp = "8.13.2"
-androidx-appcompat = "1.7.1"
+androidx-appcompat = "1.8.0"
 androidx-coordinatorlayout = "1.3.0"
-androidx-core = "1.17.0"
+androidx-core = "1.19.1"
 androidx-test-espresso = "3.7.0"
 androidx-test-junit = "1.3.0"
 junit = "4.13.2"
